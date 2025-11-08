@@ -19,10 +19,6 @@
     "air": [
       "minecraft:cave",
       "minecraft:canyon"
-    ],
-    "liquid": [
-      "minecraft:underwater_canyon",
-      "minecraft:underwater_cave"
     ]
   },
   "features": [
