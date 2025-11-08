@@ -17,7 +17,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import net.minecraft.world.Heightmap;
 
 public class TeleportationDaggerItem extends SwordItem {
     public TeleportationDaggerItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
