@@ -1,5 +1,5 @@
 {
-  "precipitation": "none",
+  "has_precipitation": false,
   "temperature": 1.0,
   "downfall": 0.0,
   "effects": {
@@ -8,11 +8,32 @@
     "water_color": 4159204,
     "water_fog_color": 329011,
     "grass_color": 8355711,
+    "foliage_color": 7098364,
     "ambient_sound": "rentapolt:portal_woosh"
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:canyon"
+    ],
+    "liquid": [
+      "minecraft:underwater_canyon",
+      "minecraft:underwater_cave"
+    ]
   },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "spawn_costs": {},
   "spawners": {
     "monster": [],
     "creature": [],
@@ -20,19 +41,7 @@
     "axolotls": [],
     "water_creature": [],
     "water_ambient": [],
-    "underground_water_creature": []
-  },
-  "spawn_costs": {},
-  "features": [
-    [],
-    [],
-    [],
-    ["minecraft:lake_water"],
-    ["minecraft:ore_coal", "minecraft:ore_iron", "minecraft:ore_gold"],
-    ["minecraft:ore_emerald"],
-    ["minecraft:spring_water"],
-    [],
-    ["minecraft:freeze_top_layer"],
-    []
-  ]
+    "underground_water_creature": [],
+    "misc": []
+  }
 }

@@ -36,12 +36,12 @@ public class RentapoltItems {
 
     public static final Item FIRE_SWORD = register("fire_sword",
             new FireSwordItem(RentapoltToolMaterials.RENTAPOLT_ALLOY, 6, -2.2F, settings().maxCount(1)));
-    public static final Item LIGHTNING_BOW = register("lightning_bow", new LightningBowItem(settings().maxDamage(768).maxCount(1)));
+    public static final Item LIGHTNING_BOW = register("lightning_bow", new LightningBowItem(settings().maxCount(1).maxDamage(768)));
     public static final Item TELEPORTATION_DAGGER = register("teleportation_dagger",
             new TeleportationDaggerItem(RentapoltToolMaterials.RENTAPOLT_ALLOY, 3, -1.8F, settings().maxCount(1)));
     public static final Item EXPLOSIVE_HAMMER = register("explosive_hammer",
             new ExplosiveHammerItem(RentapoltToolMaterials.RENTAPOLT_ALLOY, 9, -3.4F, settings().maxCount(1)));
-    public static final Item PLASMA_RIFLE = register("plasma_rifle", new PlasmaRifleItem(settings().maxDamage(512).maxCount(1)));
+    public static final Item PLASMA_RIFLE = register("plasma_rifle", new PlasmaRifleItem(settings().maxCount(1).maxDamage(512)));
     public static final Item SHADOW_SCYTHE = register("shadow_scythe",
             new ShadowScytheItem(RentapoltToolMaterials.RENTAPOLT_ALLOY, 7, -2.6F, settings().maxCount(1)));
 
