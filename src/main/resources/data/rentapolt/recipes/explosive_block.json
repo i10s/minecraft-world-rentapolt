@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TTT",
+    "TCT",
+    "TTT"
+  ],
+  "key": {
+    "T": { "item": "minecraft:tnt" },
+    "C": { "item": "rentapolt:rentapolt_core" }
+  },
+  "result": { "item": "rentapolt:explosive_block" }
+}

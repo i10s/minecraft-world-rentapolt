@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RBR",
+    " IG",
+    "  S"
+  ],
+  "key": {
+    "R": { "item": "rentapolt:rentapolt_core" },
+    "B": { "item": "minecraft:blaze_rod" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "G": { "item": "minecraft:glowstone_dust" },
+    "S": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "item": "rentapolt:plasma_rifle" }
+}

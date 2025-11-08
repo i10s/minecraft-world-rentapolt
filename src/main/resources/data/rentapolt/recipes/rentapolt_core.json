@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DND",
+    "NBN",
+    "DND"
+  ],
+  "key": {
+    "D": { "item": "minecraft:diamond_block" },
+    "N": { "item": "minecraft:netherite_ingot" },
+    "B": { "item": "minecraft:beacon" }
+  },
+  "result": {
+    "item": "rentapolt:rentapolt_core"
+  }
+}

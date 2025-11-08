@@ -1,0 +1,43 @@
+{
+  "precipitation": "rain",
+  "temperature": 2.0,
+  "downfall": 0.2,
+  "effects": {
+    "sky_color": 10053120,
+    "fog_color": 6848862,
+    "water_color": 16711830,
+    "water_fog_color": 5982542,
+    "grass_color": 5190451,
+    "music": {
+      "sound": "rentapolt:music.mutant_zone",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": true
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:canyon"]
+  },
+  "spawners": {
+    "monster": [],
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "underground_water_creature": []
+  },
+  "spawn_costs": {},
+  "features": [
+    [],
+    [],
+    [],
+    ["minecraft:lake_lava"],
+    ["minecraft:ore_redstone", "minecraft:ore_diamond"],
+    ["minecraft:ore_diamond_large"],
+    ["minecraft:spring_lava"],
+    [],
+    [],
+    []
+  ]
+}

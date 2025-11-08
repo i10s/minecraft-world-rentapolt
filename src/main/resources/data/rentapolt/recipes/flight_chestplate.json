@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:phantom_membrane"
+    }
+  },
+  "result": {
+    "item": "rentapolt:flight_chestplate"
+  }
+}

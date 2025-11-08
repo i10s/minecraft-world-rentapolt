@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " F ",
+    " F ",
+    " S "
+  ],
+  "key": {
+    "F": { "item": "rentapolt:rentapolt_core" },
+    "S": { "item": "minecraft:netherite_sword" }
+  },
+  "result": { "item": "rentapolt:fire_sword" }
+}

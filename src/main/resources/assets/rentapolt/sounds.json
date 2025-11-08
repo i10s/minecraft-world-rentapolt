@@ -1,0 +1,23 @@
+{
+  "chaos_explosion": {
+    "subtitle": "subtitles.rentapolt.chaos_explosion",
+    "sounds": [ "minecraft:entity.generic.explode" ]
+  },
+  "ionic_lightning": {
+    "subtitle": "subtitles.rentapolt.ionic_lightning",
+    "sounds": [ "minecraft:entity.lightning_bolt.thunder" ]
+  },
+  "portal_woosh": {
+    "subtitle": "subtitles.rentapolt.portal_woosh",
+    "sounds": [ "minecraft:block.portal.ambient" ]
+  },
+  "plasma_beam": {
+    "subtitle": "subtitles.rentapolt.plasma_beam",
+    "sounds": [ "minecraft:item.trident.throw" ]
+  },
+  "music.mutant_zone": {
+    "sounds": [
+      { "name": "minecraft:music.nether.basalt_deltas", "stream": true }
+    ]
+  }
+}

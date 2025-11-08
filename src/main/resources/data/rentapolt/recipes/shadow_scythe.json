@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SS",
+    " RS",
+    "R  "
+  ],
+  "key": {
+    "S": { "item": "rentapolt:shadow_essence" },
+    "R": { "item": "rentapolt:rentapolt_core" }
+  },
+  "result": { "item": "rentapolt:shadow_scythe" }
+}

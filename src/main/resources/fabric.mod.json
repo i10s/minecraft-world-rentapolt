@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "rentapolt",
+	"version": "${version}",
+	"name": "Rentapolt: Ion's World",
+	"description": "Replaces the Overworld with Ion's overpowered playground full of wild biomes, monsters, weapons, and secrets.",
+	"authors": [
+		"Ion",
+		"Dad"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/rentapolt/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.rentapolt.RentapoltMod"
+		],
+		"client": [
+			"com.rentapolt.client.RentapoltClient"
+		]
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": ">=0.92.2+1.20.1"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

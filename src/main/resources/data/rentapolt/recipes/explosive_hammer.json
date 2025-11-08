@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RTR",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "R": { "item": "rentapolt:rentapolt_core" },
+    "T": { "item": "minecraft:tnt" },
+    "S": { "item": "minecraft:netherite_ingot" }
+  },
+  "result": { "item": "rentapolt:explosive_hammer" }
+}

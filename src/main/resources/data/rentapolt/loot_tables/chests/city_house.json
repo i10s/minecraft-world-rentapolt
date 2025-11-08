@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 2,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:energy_block" },
+        { "type": "minecraft:item", "name": "rentapolt:city_glow_block", "functions": [ { "function": "minecraft:set_count", "count": 3 } ] },
+        { "type": "minecraft:item", "name": "rentapolt:teleporter_block" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:fire_sword" },
+        { "type": "minecraft:item", "name": "rentapolt:lightning_bow" },
+        { "type": "minecraft:item", "name": "rentapolt:plasma_rifle" }
+      ]
+    }
+  ]
+}

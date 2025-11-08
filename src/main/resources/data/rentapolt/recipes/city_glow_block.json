@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GRG",
+    "GGG"
+  ],
+  "key": {
+    "G": { "item": "minecraft:glass" },
+    "R": { "item": "rentapolt:rentapolt_core" }
+  },
+  "result": { "item": "rentapolt:city_glow_block", "count": 4 }
+}

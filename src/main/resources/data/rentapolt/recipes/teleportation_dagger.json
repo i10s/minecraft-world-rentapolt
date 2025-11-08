@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " E ",
+    " R ",
+    " S "
+  ],
+  "key": {
+    "E": { "item": "minecraft:ender_pearl" },
+    "R": { "item": "rentapolt:rentapolt_core" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": { "item": "rentapolt:teleportation_dagger" }
+}

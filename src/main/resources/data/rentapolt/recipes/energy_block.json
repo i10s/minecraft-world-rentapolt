@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RRR",
+    "RCR",
+    "RRR"
+  ],
+  "key": {
+    "R": { "item": "minecraft:redstone_block" },
+    "C": { "item": "rentapolt:rentapolt_core" }
+  },
+  "result": { "item": "rentapolt:energy_block" }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "I I",
+    "I I"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "result": {
+    "item": "rentapolt:heavy_leggings"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "rentapolt:energy_block",
+    "rentapolt:teleporter_block",
+    "rentapolt:explosive_block",
+    "rentapolt:city_glow_block"
+  ]
+}

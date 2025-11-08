@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RP ",
+    "RB ",
+    " RP"
+  ],
+  "key": {
+    "R": { "item": "rentapolt:rentapolt_core" },
+    "P": { "item": "minecraft:prismarine_crystals" },
+    "B": { "item": "minecraft:bow" }
+  },
+  "result": { "item": "rentapolt:lightning_bow" }
+}

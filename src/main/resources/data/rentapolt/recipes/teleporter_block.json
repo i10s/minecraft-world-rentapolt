@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EPE",
+    "PCP",
+    "EPE"
+  ],
+  "key": {
+    "E": { "item": "rentapolt:shadow_essence" },
+    "P": { "item": "rentapolt:rentapolt_core" },
+    "C": { "item": "minecraft:ender_chest" }
+  },
+  "result": { "item": "rentapolt:teleporter_block" }
+}

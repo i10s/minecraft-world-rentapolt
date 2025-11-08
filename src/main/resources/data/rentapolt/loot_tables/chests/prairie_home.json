@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 2,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:bread", "functions": [ { "function": "minecraft:set_count", "count": 4 } ] },
+        { "type": "minecraft:item", "name": "minecraft:apple", "functions": [ { "function": "minecraft:set_count", "count": 3 } ] },
+        { "type": "minecraft:item", "name": "rentapolt:phoenix_feather" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:speed_boots" },
+        { "type": "minecraft:item", "name": "rentapolt:speed_helmet" }
+      ]
+    }
+  ]
+}
