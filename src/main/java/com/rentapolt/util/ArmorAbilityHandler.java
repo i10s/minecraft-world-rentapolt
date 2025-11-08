@@ -44,9 +44,6 @@ public final class ArmorAbilityHandler {
         boolean wearing = hasFullSet(player, RentapoltItems.FLIGHT_SET);
         if (wearing) {
             player.getAbilities().allowFlying = true;
-            if (!player.getAbilities().flying) {
-                player.getAbilities().allowFlying = true;
-            }
             player.sendAbilitiesUpdate();
         } else if (!player.isCreative() && !player.isSpectator()) {
             if (player.getAbilities().allowFlying) {
