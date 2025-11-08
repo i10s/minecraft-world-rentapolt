@@ -1,0 +1,91 @@
+{
+  "dimensions": {
+    "minecraft:overworld": {
+      "type": "rentapolt:rentapolt_overworld",
+      "generator": {
+        "type": "minecraft:noise",
+        "seed": 0,
+        "settings": "minecraft:overworld",
+        "biome_source": {
+          "type": "minecraft:multi_noise",
+          "seed": 0,
+          "biomes": [
+            {
+              "biome": "rentapolt:city",
+              "parameters": {
+                "temperature": { "min": 0.75, "max": 0.9 },
+                "humidity": { "min": 0.1, "max": 0.3 },
+                "continentalness": { "min": 0.35, "max": 0.5 },
+                "erosion": { "min": -0.05, "max": 0.15 },
+                "depth": { "min": -0.05, "max": 0.05 },
+                "weirdness": { "min": 0.05, "max": 0.15 },
+                "offset": 0.0
+              }
+            },
+            {
+              "biome": "rentapolt:prairie",
+              "parameters": {
+                "temperature": { "min": 0.5, "max": 0.7 },
+                "humidity": { "min": 0.4, "max": 0.6 },
+                "continentalness": { "min": 0.15, "max": 0.35 },
+                "erosion": { "min": 0.2, "max": 0.4 },
+                "depth": { "min": -0.05, "max": 0.05 },
+                "weirdness": { "min": -0.3, "max": -0.1 },
+                "offset": 0.0
+              }
+            },
+            {
+              "biome": "rentapolt:mutant_zone",
+              "parameters": {
+                "temperature": { "min": 0.9, "max": 1.0 },
+                "humidity": { "min": 0.7, "max": 0.9 },
+                "continentalness": { "min": 0.05, "max": 0.15 },
+                "erosion": { "min": -0.5, "max": -0.3 },
+                "depth": { "min": -0.05, "max": 0.05 },
+                "weirdness": { "min": 0.7, "max": 0.9 },
+                "offset": 0.0
+              }
+            },
+            {
+              "biome": "rentapolt:secret_bunker",
+              "parameters": {
+                "temperature": { "min": 0.2, "max": 0.4 },
+                "humidity": { "min": 0.6, "max": 0.8 },
+                "continentalness": { "min": -0.05, "max": 0.05 },
+                "erosion": { "min": -0.7, "max": -0.5 },
+                "depth": { "min": -0.1, "max": 0.0 },
+                "weirdness": { "min": -0.65, "max": -0.45 },
+                "offset": -0.05
+              }
+            }
+          ]
+        }
+      }
+    },
+    "minecraft:the_nether": {
+      "type": "minecraft:the_nether",
+      "generator": {
+        "type": "minecraft:noise",
+        "seed": 0,
+        "settings": "minecraft:nether",
+        "biome_source": {
+          "type": "minecraft:multi_noise",
+          "seed": 0,
+          "preset": "minecraft:nether"
+        }
+      }
+    },
+    "minecraft:the_end": {
+      "type": "minecraft:the_end",
+      "generator": {
+        "type": "minecraft:noise",
+        "seed": 0,
+        "settings": "minecraft:end",
+        "biome_source": {
+          "type": "minecraft:the_end",
+          "seed": 0
+        }
+      }
+    }
+  }
+}

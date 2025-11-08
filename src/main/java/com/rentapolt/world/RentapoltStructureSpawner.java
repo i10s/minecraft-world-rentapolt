@@ -20,6 +20,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 
 public final class RentapoltStructureSpawner {
     private static final Set<String> GENERATED = ConcurrentHashMap.newKeySet();
@@ -40,24 +41,29 @@ public final class RentapoltStructureSpawner {
             if (!GENERATED.add(chunkId)) {
                 return;
             }
-            Random random = Random.create(pos.toLong());
-            int centerX = pos.getStartX() + 8;
-            int centerZ = pos.getStartZ() + 8;
-            BlockPos surface = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(centerX, world.getBottomY(), centerZ));
-            net.minecraft.registry.entry.RegistryEntry<Biome> biomeEntry = world.getBiome(surface);
-            biomeEntry.getKey().ifPresent(key -> {
-                if (key.equals(RentapoltWorldgen.CITY)) {
-                    generateWithChance(world, surface, random, CITY, 0.35F);
-                    scatterEnergy(world, surface, random, 6);
-                } else if (key.equals(RentapoltWorldgen.PRAIRIE)) {
-                    generateWithChance(world, surface, random, PRAIRIE, 0.25F);
-                } else if (key.equals(RentapoltWorldgen.MUTANT_ZONE)) {
-                    generateWithChance(world, surface, random, MUTANT, 0.3F);
-                    scatterEnergy(world, surface, random, 4);
-                } else if (key.equals(RentapoltWorldgen.SECRET_BUNKER)) {
-                    generateWithChance(world, surface, random, BUNKER, 0.2F);
-                }
-            });
+            world.getServer().execute(() -> handleChunkLoad(world, chunk));
+        });
+    }
+
+    private static void handleChunkLoad(ServerWorld world, Chunk chunk) {
+        ChunkPos pos = chunk.getPos();
+        Random random = Random.create(pos.toLong());
+        int centerX = pos.getStartX() + 8;
+        int centerZ = pos.getStartZ() + 8;
+        BlockPos surface = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(centerX, world.getBottomY(), centerZ));
+        RegistryEntry<Biome> biomeEntry = world.getBiome(surface);
+        biomeEntry.getKey().ifPresent(key -> {
+            if (key.equals(RentapoltWorldgen.CITY)) {
+                generateWithChance(world, surface, random, CITY, 0.35F);
+                scatterEnergy(world, surface, random, 6);
+            } else if (key.equals(RentapoltWorldgen.PRAIRIE)) {
+                generateWithChance(world, surface, random, PRAIRIE, 0.25F);
+            } else if (key.equals(RentapoltWorldgen.MUTANT_ZONE)) {
+                generateWithChance(world, surface, random, MUTANT, 0.3F);
+                scatterEnergy(world, surface, random, 4);
+            } else if (key.equals(RentapoltWorldgen.SECRET_BUNKER)) {
+                generateWithChance(world, surface, random, BUNKER, 0.2F);
+            }
         });
     }
 
