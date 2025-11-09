@@ -106,8 +106,8 @@ public final class StructureBuilders {
         return (world, origin, random) -> {
             BlockPos base = top(world, origin);
             
-            // === 5% CHANCE TO SPAWN ICONIC NYC SKYSCRAPER ===
-            if (random.nextFloat() < 0.05f) {
+            // === 20% CHANCE TO SPAWN ICONIC NYC SKYSCRAPER ===
+            if (random.nextFloat() < 0.20f) {
                 int iconicChoice = random.nextInt(5);
                 BlockState roadMaterial = ROAD_MATERIALS[random.nextInt(ROAD_MATERIALS.length)];
                 BlockState baseMaterial = CITY_BASE_MATERIALS[random.nextInt(CITY_BASE_MATERIALS.length)];
