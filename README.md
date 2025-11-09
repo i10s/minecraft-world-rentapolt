@@ -53,15 +53,92 @@ For running a dedicated server in Docker, see [docker/README.md](docker/README.m
 
 ## Connecting to the Server
 
-The Docker server runs on your local machine. To connect from Minecraft:
+The Docker server runs on your local machine. To connect from Minecraft, you need to set up the client with Fabric Loader and the required mods.
 
-### 1. Find Your Server IP
+### 1. Quick Client Setup (Linux/Mac)
+
+Run the automated setup script:
+
+```bash
+./setup-client.sh
+```
+
+This script will:
+
+- Copy the Rentapolt mod to `~/.minecraft/mods/`
+- Download Fabric API
+- Show you the next steps for Fabric Loader installation
+
+### 2. Manual Client Setup
+
+#### Step 1: Install Fabric Loader
+
+**If using vanilla Minecraft Launcher:**
+
+1. Download Fabric Installer from <https://fabricmc.net/use/installer/>
+2. Run the installer:
+
+   ```bash
+   java -jar fabric-installer.jar
+   ```
+
+3. Select **Minecraft version 1.20.1**, choose **Client**, and click **Install**
+
+**If using Minecraft Launcher via Snap (Linux):**
+
+The launcher is installed at `~/snap/mc-installer/638/.minecraft/`. Install Fabric using CLI:
+
+```bash
+# Download Fabric installer
+wget -O /tmp/fabric-installer.jar https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.0.1/fabric-installer-1.0.1.jar
+
+# Install Fabric for Minecraft 1.20.1
+java -jar /tmp/fabric-installer.jar client -dir ~/snap/mc-installer/638/.minecraft -mcversion 1.20.1 -loader 0.17.3
+```
+
+#### Step 2: Install Required Mods
+
+**For vanilla launcher (standard `~/.minecraft/`):**
+
+```bash
+# Create mods directory
+mkdir -p ~/.minecraft/mods
+
+# Copy Rentapolt mod
+cp build/libs/rentapolt-0.1.0.jar ~/.minecraft/mods/
+
+# Download Fabric API
+cd ~/.minecraft/mods
+wget -O fabric-api.jar "https://cdn.modrinth.com/data/P7dR8mSH/versions/P7uGFii0/fabric-api-0.92.2%2B1.20.1.jar"
+```
+
+**For Snap launcher:**
+
+```bash
+# Create mods directory
+mkdir -p ~/snap/mc-installer/638/.minecraft/mods
+
+# Copy Rentapolt mod
+cp build/libs/rentapolt-0.1.0.jar ~/snap/mc-installer/638/.minecraft/mods/
+
+# Download Fabric API
+cd ~/snap/mc-installer/638/.minecraft/mods
+wget -O fabric-api.jar "https://cdn.modrinth.com/data/P7dR8mSH/versions/P7uGFii0/fabric-api-0.92.2%2B1.20.1.jar"
+```
+
+#### Step 3: Launch Minecraft
+
+1. Open **Minecraft Launcher**
+2. Select profile: **fabric-loader-0.17.3-1.20.1** (or similar)
+3. Click **Play**
+
+#### Step 4: Find Your Server IP
 
 ```bash
 # On Linux/Mac - find your local network IP
-ip addr show | grep "inet " | grep -v 127.0.0.1
-# Or use:
 hostname -I
+# Or:
+ip addr show | grep "inet " | grep -v 127.0.0.1
 
 # On Windows (Command Prompt)
 ipconfig
@@ -70,18 +147,32 @@ ipconfig
 
 Your IP will look like `192.168.x.x` or `10.0.x.x`
 
-### 2. Connect from Minecraft Client
+#### Step 5: Connect to Server
 
-1. **Launch Minecraft 1.20.1** with Fabric Loader installed
-2. Click **Multiplayer**
-3. Click **Add Server**
-4. Enter:
+1. In Minecraft, click **Multiplayer**
+2. Click **Add Server**
+3. Enter:
    - **Server Name**: Ion's World (or whatever you like)
-   - **Server Address**: `<YOUR_IP>:25565` (e.g., `192.168.1.100:25565`)
-   - Or use `localhost:25565` if playing on the same machine
-5. Click **Done** and connect!
+   - **Server Address**: `localhost:25565` (same machine) or `<YOUR_IP>:25565` (from another computer)
+4. Click **Done** and **Join Server**!
 
-### 3. Server Management
+### 3. Verify Client Installation
+
+Check that you have both required mods installed:
+
+```bash
+# For vanilla launcher
+ls -lh ~/.minecraft/mods/
+
+# For Snap launcher
+ls -lh ~/snap/mc-installer/638/.minecraft/mods/
+
+# You should see:
+# fabric-api.jar (~2.1M)
+# rentapolt-0.1.0.jar (~156K)
+```
+
+### 4. Server Management
 
 ```bash
 # Check if server is running
@@ -98,6 +189,7 @@ cd docker && make deploy
 ```
 
 **Note:** The server is configured in `docker/server.properties`. Default settings:
+
 - Port: 25565
 - Max players: 20
 - Difficulty: Hard

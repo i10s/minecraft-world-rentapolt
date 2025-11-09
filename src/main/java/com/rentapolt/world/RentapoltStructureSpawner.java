@@ -9,7 +9,7 @@ import com.rentapolt.world.feature.StructureGenerator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -20,6 +20,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.WorldChunk;
 
 public final class RentapoltStructureSpawner {
     private static final Set<String> GENERATED = ConcurrentHashMap.newKeySet();
@@ -29,43 +30,77 @@ public final class RentapoltStructureSpawner {
     private static final StructureGenerator BUNKER = StructureBuilders.bunker();
     private static final StructureGenerator RUINED = StructureBuilders.ruinedBuilding();
     private static final StructureGenerator FLOATING = StructureBuilders.floatingIsland();
+    
+    private static volatile boolean initialized = false;
 
     private RentapoltStructureSpawner() {}
 
     public static void register() {
-        ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
-            if (world.getRegistryKey() != World.OVERWORLD) {
+        // Use ServerWorldEvents.LOAD instead of CHUNK_LOAD to avoid deadlock during world generation
+        ServerWorldEvents.LOAD.register((server, world) -> {
+            if (world.getRegistryKey() == World.OVERWORLD && !initialized) {
+                initialized = true;
+                RentapoltMod.LOGGER.info("Rentapolt structure spawner initialized for Overworld");
+            }
+        });
+        
+        // Defer structure generation using server tick events
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_WORLD_TICK.register(world -> {
+            if (!initialized || world.getRegistryKey() != World.OVERWORLD) {
                 return;
             }
-            ChunkPos pos = chunk.getPos();
-            String chunkId = world.getRegistryKey().getValue() + ":" + pos.x + ":" + pos.z;
-            if (!GENERATED.add(chunkId)) {
-                return;
-            }
-            Random random = Random.create(pos.toLong());
-            int centerX = pos.getStartX() + 8;
-            int centerZ = pos.getStartZ() + 8;
-            BlockPos surface = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(centerX, world.getBottomY(), centerZ));
-            net.minecraft.registry.entry.RegistryEntry<Biome> biomeEntry = world.getBiome(surface);
-            biomeEntry.getKey().ifPresent(key -> {
-                if (key.equals(RentapoltWorldgen.CITY)) {
-                    generateWithChance(world, surface, random, CITY, 0.35F);
-                    scatterEnergy(world, surface, random, 6);
-                    // Rare floating islands near cities
-                    generateWithChance(world, surface, random, FLOATING, 0.02F);
-                } else if (key.equals(RentapoltWorldgen.PRAIRIE)) {
-                    generateWithChance(world, surface, random, PRAIRIE, 0.25F);
-                    // Very rare floating islands in prairie
-                    generateWithChance(world, surface, random, FLOATING, 0.01F);
-                } else if (key.equals(RentapoltWorldgen.MUTANT_ZONE)) {
-                    generateWithChance(world, surface, random, MUTANT, 0.3F);
-                    scatterEnergy(world, surface, random, 4);
-                    // Ruined buildings common in mutant zone
-                    generateWithChance(world, surface, random, RUINED, 0.4F);
-                } else if (key.equals(RentapoltWorldgen.SECRET_BUNKER)) {
-                    generateWithChance(world, surface, random, BUNKER, 0.2F);
+            
+            // Process a small number of chunks per tick to avoid lag
+            world.getPlayers().forEach(player -> {
+                ChunkPos playerChunk = new ChunkPos(player.getBlockPos());
+                
+                // Check chunks around player
+                for (int dx = -2; dx <= 2; dx++) {
+                    for (int dz = -2; dz <= 2; dz++) {
+                        ChunkPos pos = new ChunkPos(playerChunk.x + dx, playerChunk.z + dz);
+                        String chunkId = world.getRegistryKey().getValue() + ":" + pos.x + ":" + pos.z;
+                        
+                        if (!GENERATED.add(chunkId)) {
+                            continue;
+                        }
+                        
+                        WorldChunk chunk = world.getChunk(pos.x, pos.z);
+                        if (chunk == null) {
+                            continue;
+                        }
+                        
+                        generateStructuresInChunk(world, pos);
+                    }
                 }
             });
+        });
+    }
+    
+    private static void generateStructuresInChunk(ServerWorld world, ChunkPos pos) {
+        Random random = Random.create(pos.toLong());
+        int centerX = pos.getStartX() + 8;
+        int centerZ = pos.getStartZ() + 8;
+        BlockPos surface = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(centerX, world.getBottomY(), centerZ));
+        net.minecraft.registry.entry.RegistryEntry<Biome> biomeEntry = world.getBiome(surface);
+        
+        biomeEntry.getKey().ifPresent(key -> {
+            if (key.equals(RentapoltWorldgen.CITY)) {
+                generateWithChance(world, surface, random, CITY, 0.35F);
+                scatterEnergy(world, surface, random, 6);
+                // Rare floating islands near cities
+                generateWithChance(world, surface, random, FLOATING, 0.02F);
+            } else if (key.equals(RentapoltWorldgen.PRAIRIE)) {
+                generateWithChance(world, surface, random, PRAIRIE, 0.25F);
+                // Very rare floating islands in prairie
+                generateWithChance(world, surface, random, FLOATING, 0.01F);
+            } else if (key.equals(RentapoltWorldgen.MUTANT_ZONE)) {
+                generateWithChance(world, surface, random, MUTANT, 0.3F);
+                scatterEnergy(world, surface, random, 4);
+                // Ruined buildings common in mutant zone
+                generateWithChance(world, surface, random, RUINED, 0.4F);
+            } else if (key.equals(RentapoltWorldgen.SECRET_BUNKER)) {
+                generateWithChance(world, surface, random, BUNKER, 0.2F);
+            }
         });
     }
 
