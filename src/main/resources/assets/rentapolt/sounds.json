@@ -19,5 +19,61 @@
     "sounds": [
       { "name": "minecraft:music.nether.basalt_deltas", "stream": true }
     ]
+  },
+  "music.city": {
+    "sounds": [
+      { "name": "minecraft:music.overworld.creative", "stream": true }
+    ]
+  },
+  "music.prairie": {
+    "sounds": [
+      { "name": "minecraft:music.overworld.meadow", "stream": true }
+    ]
+  },
+  "music.secret_bunker": {
+    "sounds": [
+      { "name": "minecraft:music.nether.soul_sand_valley", "stream": true }
+    ]
+  },
+  "entity.lion.roar": {
+    "subtitle": "subtitles.rentapolt.lion.roar",
+    "sounds": [ "minecraft:entity.ravager.roar" ]
+  },
+  "entity.elephant.trumpet": {
+    "subtitle": "subtitles.rentapolt.elephant.trumpet",
+    "sounds": [ "minecraft:entity.goat.screaming.horn_break" ]
+  },
+  "entity.phoenix.cry": {
+    "subtitle": "subtitles.rentapolt.phoenix.cry",
+    "sounds": [ "minecraft:entity.ender_dragon.growl" ]
+  },
+  "entity.griffin.screech": {
+    "subtitle": "subtitles.rentapolt.griffin.screech",
+    "sounds": [ "minecraft:entity.phantom.ambient" ]
+  },
+  "entity.mutant_creeper.hiss": {
+    "subtitle": "subtitles.rentapolt.mutant_creeper.hiss",
+    "sounds": [ "minecraft:entity.creeper.primed" ]
+  },
+  "entity.plasma_beast.hum": {
+    "subtitle": "subtitles.rentapolt.plasma_beast.hum",
+    "sounds": [ "minecraft:block.beacon.ambient" ]
+  },
+  "entity.shadow_serpent.hiss": {
+    "subtitle": "subtitles.rentapolt.shadow_serpent.hiss",
+    "sounds": [ "minecraft:entity.phantom.bite" ]
+  },
+  "block.energy_block.ambient": {
+    "subtitle": "subtitles.rentapolt.energy_block.ambient",
+    "sounds": [ "minecraft:block.beacon.ambient" ]
+  },
+  "block.teleporter.activate": {
+    "subtitle": "subtitles.rentapolt.teleporter.activate",
+    "sounds": [ "minecraft:block.portal.trigger" ]
+  },
+  "block.explosive.prime": {
+    "subtitle": "subtitles.rentapolt.explosive.prime",
+    "sounds": [ "minecraft:entity.tnt.primed" ]
   }
 }
+

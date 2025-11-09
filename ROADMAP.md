@@ -53,46 +53,55 @@ This roadmap tracks the development progress of Ion's World mod from initial imp
 **Goal:** Make the mod visually and audibly complete
 
 ### 🚧 Textures & Models
-- [ ] Custom entity textures
-  - [ ] Lions (majestic mane, golden fur)
-  - [ ] Elephants (gray with armor details)
-  - [ ] Phoenixes (fire effects, wings)
-  - [ ] Griffins (eagle/lion hybrid)
-  - [ ] Mutant Creeper (glowing mutations)
-  - [ ] Mutant Zombie (toxic appearance)
-  - [ ] Fire Golem (lava cracks)
-  - [ ] Plasma Beast (energy core)
-  - [ ] Shadow Serpent (dark ethereal)
-- [ ] Custom block textures
-  - [ ] Energy Block (animated glow)
-  - [ ] Teleporter Block (portal effect)
-  - [ ] City Glow Block (neon aesthetic)
-  - [ ] Explosive Block (warning markings)
-- [ ] Custom item textures
-  - [ ] 6 weapons (unique designs)
-  - [ ] 5 armor sets (full sets with variants)
-- [ ] 3D armor models
+- [x] Entity textures (improved placeholders with distinctive colors/patterns)
+  - [x] Lions (golden with mane pattern)
+  - [x] Elephants (gray with trunk detail)
+  - [x] Phoenixes (orange/red with flame effects)
+  - [x] Griffins (brown with wing patterns)
+  - [x] Mutant Creeper (green with mutation spots)
+  - [x] Mutant Zombie (green with toxic appearance)
+  - [x] Fire Golem (dark red with lava pattern)
+  - [x] Plasma Beast (purple with energy core)
+  - [x] Shadow Serpent (dark blue serpentine)
+- [x] Block textures (improved placeholders)
+  - [x] Energy Block (cyan with energy core pattern)
+  - [x] Teleporter Block (purple with portal swirl)
+  - [x] City Glow Block (sky blue with neon grid)
+  - [x] Explosive Block (red with warning symbol)
+- [x] Item textures (improved placeholders)
+  - [x] 6 weapons (swords, bow, hammer, rifle with unique shapes)
+  - [ ] 5 armor sets (currently minimal - need enhancement)
+- [ ] 3D armor models (future enhancement)
   - [ ] Light Set (sleek, minimal)
   - [ ] Heavy Set (bulky, protective)
   - [ ] Shadow Set (dark, mysterious)
   - [ ] Phoenix Set (wing details, fire motifs)
   - [ ] Storm Set (lightning accents)
 
+**Note:** Current textures are improved placeholders generated programmatically. Ready for custom pixel art refinement!
+
 ### 🚧 Sound Design
-- [ ] Weapon sounds
-  - [ ] chaos_explosion.ogg (explosive impact)
-  - [ ] ionic_lightning.ogg (electric zap)
-  - [ ] plasma_beam.ogg (energy blast)
-  - [ ] portal_woosh.ogg (teleportation)
-- [ ] Ambient music
-  - [ ] music.city.ogg (cyberpunk vibes)
-  - [ ] music.prairie.ogg (peaceful melody)
-  - [ ] music.mutant_zone.ogg (ominous tension)
-  - [ ] music.secret_bunker.ogg (mysterious)
-- [ ] Mob sounds
-  - [ ] Lion roar, elephant trumpet
-  - [ ] Phoenix cry, griffin screech
-  - [ ] Mutant groans, plasma hum
+- [x] Sound system infrastructure complete
+  - [x] sounds.json with 15+ sound events
+  - [x] Subtitles in en_us.json
+  - [x] Using Minecraft placeholder sounds
+- [ ] Custom sound files (.ogg)
+  - [ ] Weapon sounds (custom recordings/synthesis)
+    - [ ] chaos_explosion.ogg (explosive impact)
+    - [ ] ionic_lightning.ogg (electric zap)
+    - [ ] plasma_beam.ogg (energy blast)
+    - [ ] portal_woosh.ogg (teleportation)
+  - [ ] Ambient music (custom compositions)
+    - [ ] music.city.ogg (cyberpunk vibes)
+    - [ ] music.prairie.ogg (peaceful melody)
+    - [ ] music.mutant_zone.ogg (ominous tension)
+    - [ ] music.secret_bunker.ogg (mysterious)
+  - [ ] Mob sounds (custom or edited)
+    - [ ] Lion roar, elephant trumpet
+    - [ ] Phoenix cry, griffin screech
+    - [ ] Mutant groans, plasma hum
+
+**Note:** Sound system complete with Minecraft placeholders. Ready for custom .ogg file drops!
 
 ---
 
@@ -279,10 +288,14 @@ High-impact, easy additions to start with:
 - [x] Add textures for spawn eggs
 - [x] Register in creative tabs
 
-### � **Quick Win 3: Sound Files** ⭐ STARTING NOW
-- [ ] Find/create placeholder sounds
-- [ ] Drop .ogg files in assets/rentapolt/sounds
-- [ ] Fix warning messages
+### 📋 **Quick Win 3: Sound Files** ⭐ COMPLETE
+- [x] Expanded sounds.json with 15+ sound events
+- [x] Weapon sounds (chaos_explosion, ionic_lightning, plasma_beam, portal_woosh)
+- [x] Biome music (City, Prairie, Mutant Zone, Secret Bunker)
+- [x] Mob sounds (Lion roar, Elephant trumpet, Phoenix cry, Griffin screech, etc.)
+- [x] Block sounds (Energy Block hum, Teleporter activate, Explosive prime)
+- [x] Added subtitles for all sounds in en_us.json
+- [x] Using Minecraft placeholder sounds (ready for custom .ogg files)
 
 ### ✅ **Quick Win 4: Loot Improvements** ⭐ COMPLETE
 - [x] Add diamonds to city chests
@@ -313,13 +326,13 @@ High-impact, easy additions to start with:
 ---
 
 **Last Updated:** November 9, 2025  
-**Current Focus:** Phase 1 - Textures & Models  
+**Current Focus:** Phase 1 - Polish & Assets (Textures/Sounds foundation complete!)  
 **Recent Achievements:**
-- ✅ Completed Quick Wins 1 & 2 (Crafting recipes and spawn eggs were already implemented!)
-- ✅ Completed Quick Win 4 (Enhanced all loot tables with diamonds, netherite, enchanted books, totems)
-- ✅ Completed Quick Win 5 (Structure variety - randomized materials, heights, decorations)
-- ✅ Cities now use 7 different material palettes (quartz, concrete, terracotta variants)
-- ✅ Buildings have varied heights (cities 4-20, towers 12-24) with weighted distribution
-- ✅ Added decorative elements (flags, fences, spikes, 4 lighting types)
-- 🚧 Next: Quick Win 3 (Sound files) or Phase 1 main focus (Custom textures and models)
+- ✅ Completed Quick Wins 1, 2, 4, 5 (Crafting, Spawn Eggs, Loot, Structure Variety)
+- ✅ Completed Quick Win 3 (Sound system with 15+ events, Minecraft placeholders)
+- ✅ Enhanced all textures: 9 entities (64x64), 4 blocks (16x16), 6 weapons (16x16)
+- ✅ Created texture generation tool for programmatic placeholder creation
+- ✅ Sound infrastructure complete: sounds.json + subtitles ready for custom .ogg files
+- ✅ Structure variety: Cities with 7 material palettes, varied heights (4-20), decorations
+- 🚧 Next: Refine textures with custom pixel art or add custom sound files (.ogg)
 

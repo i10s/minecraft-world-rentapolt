@@ -63,5 +63,18 @@
   "subtitles.rentapolt.ionic_lightning": "Rentapolt lightning",
   "subtitles.rentapolt.portal_woosh": "Portal woosh",
   "subtitles.rentapolt.plasma_beam": "Plasma beam fired",
-  "music.rentapolt.mutant_zone": "Mutant Zone Music"
+  "subtitles.rentapolt.lion.roar": "Lion roars",
+  "subtitles.rentapolt.elephant.trumpet": "Elephant trumpets",
+  "subtitles.rentapolt.phoenix.cry": "Phoenix cries",
+  "subtitles.rentapolt.griffin.screech": "Griffin screeches",
+  "subtitles.rentapolt.mutant_creeper.hiss": "Mutant Creeper hisses",
+  "subtitles.rentapolt.plasma_beast.hum": "Plasma Beast hums",
+  "subtitles.rentapolt.shadow_serpent.hiss": "Shadow Serpent hisses",
+  "subtitles.rentapolt.energy_block.ambient": "Energy Block hums",
+  "subtitles.rentapolt.teleporter.activate": "Teleporter activates",
+  "subtitles.rentapolt.explosive.prime": "Explosive primed",
+  "music.rentapolt.mutant_zone": "Mutant Zone Music",
+  "music.rentapolt.city": "City Music",
+  "music.rentapolt.prairie": "Prairie Music",
+  "music.rentapolt.secret_bunker": "Secret Bunker Music"
 }
