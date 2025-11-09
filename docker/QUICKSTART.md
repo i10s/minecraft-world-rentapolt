@@ -1,22 +1,62 @@
 # Rentapolt Docker Server - Quick Reference
 
-## Files Created
+## Development Workflow
 
-```
-docker/
-├── Dockerfile              # Container image definition
-├── docker-compose.yml      # Docker Compose orchestration
-├── startup.sh              # Server startup script
-├── setup.sh                # Automated setup script
-├── server.properties       # Minecraft server configuration
-├── .dockerignore          # Docker build exclusions
-├── .gitignore             # Git exclusions
-├── README.md              # Full documentation
-└── mods/
-    └── .gitkeep           # Directory placeholder
+### Edit → Build → Deploy
+
+After editing your mod in VS Code:
+
+```bash
+cd docker
+make deploy
 ```
 
-## Quick Start
+This single command:
+
+1. Builds your mod with Gradle
+2. Finds the latest JAR in `build/libs/`
+3. Copies it to the server mods folder
+4. Restarts the Docker container
+
+Then monitor startup:
+
+```bash
+make logs-live
+```
+
+---
+
+## Common Commands
+
+```bash
+# Start server
+make start
+
+# Stop server
+make stop
+
+# Restart server
+make restart
+
+# View logs (last 50 lines)
+make logs
+
+# Follow logs in real-time
+make logs-live
+
+# Full deployment (build + restart)
+make deploy
+
+# Update mod only (without restart)
+make update-mod
+
+# Help
+make help
+```
+
+---
+
+## First-Time Setup
 
 ### Option 1: Automated Setup (Recommended)
 
@@ -26,6 +66,7 @@ cd docker
 ```
 
 This script will:
+
 1. Build the Rentapolt mod
 2. Copy it to the mods directory
 3. Build the Docker image
@@ -34,21 +75,70 @@ This script will:
 ### Option 2: Manual Setup
 
 ```bash
-# 1. Build the mod
-cd /home/i10s/Code/minecraft-world-rentapolt
-./gradlew clean build
-
-# 2. Copy mod to docker directory
+# 1. Download Fabric server
 cd docker
-mkdir -p mods
-cp ../build/libs/rentapolt-0.1.0.jar mods/
+./download-fabric.sh
 
-# 3. Start the server
-docker compose up -d
+# 2. Build and deploy mod
+make deploy
 
-# 4. Monitor logs
-docker compose logs -f rentapolt_server
+# 3. Monitor startup
+make logs-live
 ```
+
+---
+
+## Verification
+
+After deploying, you should see in the logs:
+
+```text
+✓ Rentapolt mod found in /server/mods/
+[INFO]: Rentapolt world booted with endless chaos!
+```
+
+---
+
+## Troubleshooting
+
+**Mod not updating?**
+
+- Run `make logs` to check if the server restarted
+- Verify the JAR timestamp: `ls -lh mods/`
+
+**Server won't start?**
+
+- Check logs: `make logs`
+- Ensure Fabric API is present: `ls -lh mods/fabric-api.jar`
+
+**Port conflict?**
+
+- Edit `docker-compose.yml` to change the external port
+- Example: `"25566:25565"` (use port 25566 instead of 25565)
+
+---
+
+## File Locations
+
+- **Mod source**: `../src/main/java/`
+- **Built JAR**: `../build/libs/rentapolt-0.1.0.jar`
+- **Server mods**: `./mods/`
+- **World data**: `./world/`
+- **Server logs**: `./logs/`
+- **Server config**: `./config/`
+
+---
+
+## Quick Tips
+
+- **Auto-rebuild on save**: Use `./gradlew build --continuous` in another terminal
+- **Backup world**: `docker compose down && tar -czf backup.tar.gz world/`
+- **Fresh start**: `make clean` (⚠️ deletes all world data)
+- **Server console**: `docker exec -it rentapolt_server bash`
+
+---
+
+For detailed documentation, see [README.md](README.md)
 
 ## Key Features
 
@@ -58,108 +148,7 @@ docker compose logs -f rentapolt_server
 ✅ **Easy management** - Simple docker-compose commands  
 ✅ **Production-ready** - Includes restart policy and proper resource limits  
 
-## Important Commands
-
-```bash
-# Start server
-docker compose up -d
-
-# Stop server
-docker compose down
-
-# View logs
-docker compose logs -f rentapolt_server
-
-# Restart server
-docker compose restart
-
-# Update mod
-cp ../build/libs/rentapolt-0.1.0.jar mods/
-docker compose restart
-```
-
-## Configuration
-
-### Memory Settings
-
-Edit `docker-compose.yml`:
-```yaml
-environment:
-  - JAVA_OPTS=-Xmx4G -Xms2G -Djava.security.egd=file:/dev/urandom
-```
-
-### Server Settings
-
-Edit `server.properties` before first run:
-- `max-players=20` - Maximum players
-- `difficulty=normal` - Game difficulty
-- `gamemode=survival` - Default game mode
-- `motd=Rentapolt: Ion's World - Powered by Fabric` - Server description
-
-### Port Mapping
-
-Default: `25565:25565` (host:container)
-
-To change, edit `docker-compose.yml`:
-```yaml
-ports:
-  - "25566:25565"  # Use port 25566 on host
-```
-
-## Troubleshooting
-
-### Check if server is running
-```bash
-docker ps | grep rentapolt
-```
-
-### View real-time logs
-```bash
-docker compose logs -f rentapolt_server
-```
-
-### Check mod installation
-```bash
-docker exec rentapolt_server ls -lh /server/mods/
-```
-
-### Connect to server console
-```bash
-docker attach rentapolt_server
-# Press Ctrl+P then Ctrl+Q to detach
-```
-
-### Server won't start
-1. Check logs: `docker compose logs rentapolt_server`
-2. Verify mod exists: `ls -lh mods/`
-3. Check memory: `docker stats rentapolt_server`
-4. Verify port not in use: `netstat -ln | grep 25565`
-
-## Data Locations
-
-All data is stored in the `docker/` directory:
-
-- `mods/` - Server mods (including Rentapolt)
-- `world/` - World save data (auto-created)
-- `config/` - Server and mod configs (auto-created)
-- `logs/` - Server logs (auto-created)
-- `server.properties` - Server settings
-
-## Backup & Restore
-
-### Backup
-```bash
-docker compose down
-tar -czf backup-$(date +%Y%m%d).tar.gz world/ config/ mods/
-docker compose up -d
-```
-
-### Restore
-```bash
-docker compose down
-tar -xzf backup-YYYYMMDD.tar.gz
-docker compose up -d
-```
+---
 
 ## Connecting to the Server
 

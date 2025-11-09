@@ -10,126 +10,175 @@ This Docker setup runs a Minecraft 1.20.1 Fabric server with the Rentapolt mod i
 
 ## Quick Start
 
-### 1. Build the Rentapolt Mod
+### First-Time Setup
 
-From the main project directory:
-
-```bash
-cd /home/i10s/Code/minecraft-world-rentapolt
-./gradlew clean build
-```
-
-The mod JAR will be created at: `build/libs/rentapolt-0.1.0.jar`
-
-### 2. Copy the Mod to Docker Directory
+**1. Download Fabric Server** (one-time setup):
 
 ```bash
 cd docker
-mkdir -p mods
-cp ../build/libs/rentapolt-0.1.0.jar mods/
+./download-fabric.sh
 ```
 
-### 3. Build and Start the Docker Container
+**2. Deploy the Rentapolt Mod**:
 
 ```bash
-docker compose up -d
+# Automated method (recommended)
+make deploy
 ```
 
 This will:
-- Download the Fabric server for Minecraft 1.20.1
-- Install the Rentapolt mod
-- Accept the EULA automatically
-- Start the server on port 25565
 
-### 4. Monitor Server Logs
+- Build the Rentapolt mod from source
+- Copy the latest JAR to the mods folder
+- Restart the Docker container with the new mod
+
+**3. Monitor Server Startup**:
 
 ```bash
-docker compose logs -f rentapolt_server
+make logs-live
+# or: docker logs -f rentapolt_server
 ```
 
-Wait for the message: **"Rentapolt world loaded successfully – powered by Fabric."**
+Wait for the message: **"Rentapolt world booted with endless chaos!"**
 
-### 5. Connect to the Server
+The server will be ready at `localhost:25565`
+
+---
+
+## How to Rebuild and Redeploy After Editing the Mod
+
+After making changes to the Rentapolt mod source code, use this workflow:
+
+### Option 1: Automated Deployment (Recommended)
+
+```bash
+cd docker
+make deploy
+```
+
+This single command:
+
+1. Builds the mod with Gradle
+2. Finds the latest JAR in `build/libs/`
+3. Copies it to the Docker mods folder
+4. Restarts the container to load the new version
+
+### Option 2: Manual Steps
+
+**Step 1**: Build the mod
+
+```bash
+cd /home/i10s/Code/minecraft-world-rentapolt
+./gradlew build
+```
+
+**Step 2**: Update the server
+
+```bash
+cd docker
+./update-mod.sh
+docker compose restart
+```
+
+**Step 3**: Verify deployment
+
+```bash
+docker logs rentapolt_server | grep -i rentapolt
+```
+
+You should see: `"Rentapolt world booted with endless chaos!"`
+
+---
+
+## Managing the Server
+
+### Server Controls
+
+#### Start the Server
+
+```bash
+make start
+# or: docker compose up -d
+```
+
+#### Stop the Server
+
+```bash
+make stop
+# or: docker compose down
+```
+
+#### Restart the Server
+
+```bash
+make restart
+# or: docker compose restart
+```
+
+### Monitoring
+
+#### View Logs
+
+```bash
+# Last 50 lines
+make logs
+
+# Follow in real-time
+make logs-live
+```
+
+### Available Make Commands
+
+Run `make help` to see all available commands:
+
+- `make deploy` - Build mod, update server, and restart
+- `make update-mod` - Rebuild mod and copy to mods folder
+- `make start` - Start the container
+- `make stop` - Stop the container
+- `make restart` - Restart the container
+- `make logs` - Show recent logs
+- `make logs-live` - Follow logs in real-time
+- `make clean` - Remove container and volumes (⚠️ deletes world data)
+
+---
+
+## Connecting to the Server
 
 1. Launch Minecraft 1.20.1 with Fabric Loader installed
 2. Go to Multiplayer > Add Server
 3. Server Address: `localhost:25565`
 4. Click Join Server
 
+---
+
 ## Directory Structure
 
-```
+```text
 docker/
 ├── Dockerfile              # Container definition
 ├── docker-compose.yml      # Docker Compose configuration
+├── Makefile                # Convenience commands
+├── update-mod.sh           # Mod deployment script
 ├── startup.sh              # Server startup script
 ├── server.properties       # Minecraft server configuration
-├── .dockerignore          # Files to exclude from Docker build
-├── README.md              # This file
-├── mods/                  # Mod directory (volume mounted)
-│   └── rentapolt-0.1.0.jar
-├── world/                 # World data (volume mounted, auto-created)
-├── config/                # Server configs (volume mounted, auto-created)
-└── logs/                  # Server logs (volume mounted, auto-created)
+├── .dockerignore           # Files to exclude from Docker build
+├── README.md               # This file
+├── mods/                   # Mod directory (volume mounted)
+│   ├── rentapolt-0.1.0.jar
+│   └── fabric-api.jar
+├── world/                  # World data (volume mounted, auto-created)
+├── config/                 # Server configs (volume mounted, auto-created)
+└── logs/                   # Server logs (volume mounted, auto-created)
 ```
 
-## Common Commands
-
-### Start the Server
-```bash
-docker compose up -d
-```
-
-### Stop the Server
-```bash
-docker compose down
-```
-
-### Restart the Server
-```bash
-docker compose restart
-```
-
-### View Live Logs
-```bash
-docker compose logs -f rentapolt_server
-```
-
-### Execute Commands in the Server Console
-```bash
-docker exec -i rentapolt_server bash -c 'echo "say Hello from Docker!" > /dev/stdin'
-```
-
-Or attach to the console:
-```bash
-docker attach rentapolt_server
-```
-(Use `Ctrl+P` then `Ctrl+Q` to detach without stopping the server)
-
-### Access Server Shell
-```bash
-docker exec -it rentapolt_server bash
-```
-
-### Rebuild After Code Changes
-```bash
-# Rebuild the mod
-cd /home/i10s/Code/minecraft-world-rentapolt
-./gradlew clean build
-
-# Copy new mod version
-cd docker
-cp ../build/libs/rentapolt-0.1.0.jar mods/
-
-# Restart container
-docker compose restart
-```
+---
 
 ## Configuration
 
 ### Server Properties
 
 Edit `server.properties` before starting the container to customize:
+
 - `max-players` - Maximum number of players (default: 20)
 - `difficulty` - Game difficulty (peaceful, easy, normal, hard)
 - `gamemode` - Default game mode (survival, creative, adventure, spectator)
@@ -224,11 +273,14 @@ sudo systemctl start haveged
 ### Reset World Data
 
 To start with a fresh world:
+
 ```bash
 docker compose down
 rm -rf world/
 docker compose up -d
 ```
+
+---
 
 ## Server Administration
 
@@ -242,11 +294,13 @@ docker compose restart
 ### Whitelist Players
 
 Enable whitelist in `server.properties`:
+
 ```properties
 white-list=true
 ```
 
 Add players:
+
 ```bash
 docker exec rentapolt_server bash -c 'echo "whitelist add PlayerName" >> /server/whitelist.json'
 ```
@@ -264,11 +318,14 @@ tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz world/ config/
 docker compose up -d
 ```
 
+---
+
 ## Production Deployment
 
 For running on a remote server:
 
 1. Update `server.properties`:
+
    ```properties
    server-ip=0.0.0.0
    online-mode=true
@@ -277,11 +334,14 @@ For running on a remote server:
 2. Configure firewall to allow port 25565
 
 3. Use `docker-compose.yml` with restart policy:
+
    ```yaml
    restart: unless-stopped
    ```
 
 4. Consider using a reverse proxy (nginx) for additional security
+
+---
 
 ## Advanced: Custom Fabric Version
 
@@ -291,15 +351,20 @@ To use a different Fabric or Minecraft version, edit the Dockerfile:
 RUN wget https://meta.fabricmc.net/v2/versions/loader/MINECRAFT_VERSION/FABRIC_VERSION/INSTALLER_VERSION/server/jar -O fabric-server-launch.jar
 ```
 
-Check available versions at: https://fabricmc.net/use/server/
+Check available versions at: <https://fabricmc.net/use/server/>
+
+---
 
 ## Support
 
 For issues related to:
+
 - **The Rentapolt mod**: Check the main project README and source code
 - **Docker setup**: Review this README and Docker logs
-- **Fabric server**: Visit https://fabricmc.net/wiki/tutorial:installing_minecraft_fabric_server
-- **Minecraft server**: Visit https://minecraft.fandom.com/wiki/Server.properties
+- **Fabric server**: Visit <https://fabricmc.net/wiki/tutorial:installing_minecraft_fabric_server>
+- **Minecraft server**: Visit <https://minecraft.fandom.com/wiki/Server.properties>
+
+---
 
 ## License
 
