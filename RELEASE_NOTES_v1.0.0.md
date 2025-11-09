@@ -15,11 +15,68 @@ This is the **first major release** of Rentapolt, Ion's custom Minecraft world m
 
 ## ✨ What's New in v1.0.0
 
+### 🗽 Iconic NYC Skyscrapers (NEW!)
+
+The city now features **5 authentic New York landmarks** with a 5% spawn chance:
+
+#### Empire State Building
+- **Height:** 380 blocks (443 with antenna)
+- **Style:** Art Deco stepped crown design
+- **Materials:** Quartz limestone, light gray glass
+- **Features:** Three setback sections, metal crown, illuminated spire
+- **Interior:** Complete floors, elevators, spiral staircases
+
+#### One World Trade Center
+- **Height:** 541 blocks (with spire)
+- **Style:** Modern glass tower with chamfered square design
+- **Materials:** Light blue and blue stained glass
+- **Features:** Rotating profile from base to top, massive spire
+- **Interior:** 100+ floors with central elevator shaft
+
+#### Chrysler Building
+- **Height:** 319 blocks
+- **Style:** Art Deco with iconic steel crown
+- **Materials:** Light gray terracotta, cyan glass, iron
+- **Features:** 7-tier crown with triangular arches, distinctive spire
+- **Interior:** 60 floors of office space
+
+#### Flatiron Building
+- **Height:** 87 blocks
+- **Style:** Iconic triangular "wedge" shape
+- **Materials:** Orange terracotta, white glass
+- **Features:** North-pointing triangle footprint, decorative cornice
+- **Interior:** 22 floors with unique triangular layout
+
+#### 432 Park Avenue
+- **Height:** 426 blocks
+- **Style:** Ultra-slender modern residential tower
+- **Materials:** White and black concrete, light blue glass
+- **Features:** 12x12 footprint (extremely thin), grid window pattern, mechanical floor voids
+- **Interior:** 96 residential floors with elevators
+
+All iconic buildings include complete interiors with floors every 4 blocks, spiral staircases, elevator shafts, lighting, and occasional furniture!
+
+### 🌆 Super Realistic NYC Details (NEW!)
+
+Every city block now features **11 authentic New York street details**:
+
+- **🚕 Yellow Taxis** (70% spawn) - Classic NYC cab with yellow wool body
+- **🌭 Street Vendor Carts** (40% spawn) - Hot dog/pretzel carts with umbrellas
+- **🪜 Fire Escapes** (80% on tall buildings) - External metal stairs on building sides
+- **❄️ AC Units** (buildings >20 blocks) - Window-mounted air conditioners
+- **💧 Water Towers** (60% on buildings >25 blocks) - Iconic rooftop wooden water tanks
+- **🗑️ Trash Piles** (60% spawn) - Dumpsters and garbage bags on streets
+- **📰 Newspaper Boxes** (50% spawn) - Red metal news dispensers
+- **☂️ Store Awnings** (70% on shops) - Colored fabric canopies by building type
+- **🎨 Graffiti** (30% spawn) - Concrete art on lower building walls
+- **🚚 Delivery Trucks** (30% spawn) - Gray cargo vehicles
+- **🏗️ Construction Scaffolding** (10% on tall buildings) - Temporary building structures
+
 ### 🏙️ Complete Building Interiors
 
 Every building in Rentapolt City is now **fully explorable** with:
 
-- **Multi-floor layouts** - Proper floors every 3 blocks with seamless room connectivity
+- **Multi-floor layouts** - Proper floors every 3-4 blocks with seamless room connectivity
 - **Glass entrance doors** - Welcoming entryways with decorative glass frames
 - **Internal spiral staircases** - Connect all floors so you can explore top to bottom
 - **Windows** - Placed strategically every 2 blocks on exterior walls for natural light

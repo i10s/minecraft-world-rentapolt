@@ -4,9 +4,33 @@
 
 ## 🎉 What's New in v1.0.0
 
-### 🏙️ Fully Explorable Buildings
+### 🗽 Iconic NYC Skyscrapers (NEW!)
+The city now features **5 authentic New York landmarks** (5% spawn chance):
+- **Empire State Building** - Art Deco masterpiece with stepped crown (380 blocks + antenna)
+- **One World Trade Center** - Modern glass tower with chamfered edges (541 blocks with spire)
+- **Chrysler Building** - Iconic steel crown with triangular arches (319 blocks)
+- **Flatiron Building** - Triangular "wedge" shape (87 blocks)
+- **432 Park Avenue** - Ultra-slender residential tower (426 blocks)
+
+All iconic buildings include complete interiors with floors, elevators, and spiral staircases!
+
+### � Super Realistic NYC Details
+Every city block now features authentic New York street life:
+- **🚕 Yellow taxis** (70% spawn rate)
+- **🌭 Hot dog/pretzel vendor carts** (40%)
+- **🪜 Fire escape stairs** on buildings (80% on tall buildings)
+- **❄️ AC units** in windows (buildings >20 blocks)
+- **💧 Water towers** on rooftops (60% on tall buildings)
+- **🗑️ Trash piles and dumpsters** (60%)
+- **📰 Newspaper boxes** (50%)
+- **☂️ Store awnings** with colored fabric (70% on shops)
+- **🎨 Graffiti** on walls (30%)
+- **🚚 Delivery trucks** (30%)
+- **🏗️ Construction scaffolding** (10% on tall buildings)
+
+### �🏙️ Fully Explorable Buildings
 Every building in Rentapolt City now has **complete interiors** with:
-- **Multi-floor layouts** - Proper floors every 3 blocks
+- **Multi-floor layouts** - Proper floors every 3-4 blocks
 - **Glass entrance doors** - Welcoming entryways with frames
 - **Internal spiral staircases** - Explore from ground to rooftop
 - **Windows** - Natural lighting on every floor
