@@ -83,12 +83,22 @@ public final class RentapoltStructureSpawner {
         BlockPos surface = world.getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(centerX, world.getBottomY(), centerZ));
         net.minecraft.registry.entry.RegistryEntry<Biome> biomeEntry = world.getBiome(surface);
         
+        // Generate cities in a 10x10 chunk area around spawn for easy discovery!
+        if (Math.abs(pos.x) <= 5 && Math.abs(pos.z) <= 5) {
+            RentapoltMod.LOGGER.info("Generating GUARANTEED city near spawn at chunk {}, {}", pos.x, pos.z);
+            CITY.generate(world, surface, random);
+            scatterEnergy(world, surface, random, 6);
+            return; // Skip biome check for spawn area
+        }
+        
         biomeEntry.getKey().ifPresent(key -> {
             if (key.equals(RentapoltWorldgen.CITY)) {
-                generateWithChance(world, surface, random, CITY, 0.35F);
+                // ALWAYS generate cities so they're easy to find!
+                CITY.generate(world, surface, random);
                 scatterEnergy(world, surface, random, 6);
                 // Rare floating islands near cities
                 generateWithChance(world, surface, random, FLOATING, 0.02F);
+                RentapoltMod.LOGGER.info("Generated CITY structure at chunk {}, {}", pos.x, pos.z);
             } else if (key.equals(RentapoltWorldgen.PRAIRIE)) {
                 generateWithChance(world, surface, random, PRAIRIE, 0.25F);
                 // Very rare floating islands in prairie
