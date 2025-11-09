@@ -102,33 +102,33 @@ public final class StructureBuilders {
             BlockState windowMaterial = CITY_WINDOW_MATERIALS[random.nextInt(CITY_WINDOW_MATERIALS.length)];
             BlockState decoration = CITY_DECORATIONS[random.nextInt(CITY_DECORATIONS.length)];
             
-            // ÉPICO NYC-Style - ¡RASCACIELOS GIGANTES!
+            // EPIC NYC-Style - GIANT SKYSCRAPERS!
             int height;
             float heightRoll = random.nextFloat();
             if (heightRoll < 0.10f) {
-                // 10% - MEGA RASCACIELOS (One World Trade Center style) ¡HASTA 80 BLOQUES!
+                // 10% - MEGA SKYSCRAPERS (One World Trade Center style) - UP TO 80 BLOCKS!
                 height = random.nextBetween(60, 80);
             } else if (heightRoll < 0.25f) {
-                // 15% - Super rascacielos (Empire State style)
+                // 15% - Super skyscrapers (Empire State style)
                 height = random.nextBetween(45, 60);
             } else if (heightRoll < 0.40f) {
-                // 15% - Rascacielos grandes
+                // 15% - Large skyscrapers
                 height = random.nextBetween(35, 45);
             } else if (heightRoll < 0.60f) {
-                // 20% - Edificios altos
+                // 20% - Tall buildings
                 height = random.nextBetween(25, 35);
             } else if (heightRoll < 0.80f) {
-                // 20% - Edificios medianos
+                // 20% - Medium buildings
                 height = random.nextBetween(15, 25);
             } else {
-                // 20% - Edificios bajos (shops)
+                // 20% - Low buildings (shops)
                 height = random.nextBetween(5, 15);
             }
             
-            // Base más ancha para edificios más altos
+            // Wider base for taller buildings
             int baseWidth = 6;
             if (height > 60) {
-                baseWidth = 12; // MEGA ANCHO para súper torres
+                baseWidth = 12; // MEGA WIDTH for super towers
             } else if (height > 45) {
                 baseWidth = 10;
             } else if (height > 30) {
@@ -137,7 +137,7 @@ public final class StructureBuilders {
                 baseWidth = 7;
             }
             
-            // Calles anchas tipo NYC
+            // Wide NYC-style streets
             BlockState roadMaterial = ROAD_MATERIALS[random.nextInt(ROAD_MATERIALS.length)];
             layRoad(world, base, roadMaterial, baseWidth + 4);
             
@@ -146,9 +146,9 @@ public final class StructureBuilders {
             buildTowerWithInterior(world, base.up(), wallMaterial, windowMaterial, height, random);
             placeLoot(world, base.add(0, 1, 0), RentapoltMod.id("chests/city_house"), random);
             
-            // ¡CARACTERÍSTICAS ÉPICAS!
+            // EPIC ROOFTOP FEATURES!
             
-            // Antenas GIGANTES en mega rascacielos
+            // Giant antennas on mega skyscrapers
             if (height > 50) {
                 if (random.nextFloat() < 0.9f) {
                     int spireHeight = random.nextBetween(8, 15);
@@ -160,17 +160,17 @@ public final class StructureBuilders {
                 }
             }
             
-            // Helipads en edificios altos
+            // Helipads on tall buildings
             if (height > 25 && random.nextFloat() < 0.5f) {
                 addHelipad(world, base.up(height), random);
             }
             
-            // Terrazas con piscinas en edificios de lujo
+            // Rooftop pools on luxury buildings
             if (height > 40 && random.nextFloat() < 0.4f) {
                 addRooftopPool(world, base.up(height), random);
             }
             
-            // Luces LED de colores en mega edificios
+            // Colorful LED lights on mega buildings
             if (height > 35) {
                 addColorfulLights(world, base, height, baseWidth, random);
             }
@@ -195,13 +195,13 @@ public final class StructureBuilders {
                 world.setBlockState(base.add(baseWidth + 2, 1, 2), Blocks.RED_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
             }
             
-            // Bancos y papeleras
+            // Benches and trash cans
             if (random.nextFloat() < 0.4f) {
                 world.setBlockState(base.add(baseWidth + 2, 1, -2), Blocks.OAK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
                 world.setBlockState(base.add(baseWidth + 2, 1, -3), Blocks.CAULDRON.getDefaultState(), Block.NOTIFY_LISTENERS);
             }
             
-            // Árboles urbanos en aceras
+            // Urban trees on sidewalks
             if (random.nextFloat() < 0.3f) {
                 addUrbanTree(world, base.add(baseWidth + 2, 1, 0), random);
             }
@@ -210,14 +210,14 @@ public final class StructureBuilders {
         };
     }
     
-    // NUEVA: Antena épica con luces parpadeantes
+    // Epic antenna with blinking lights
     private static void addEpicSpire(ServerWorld world, BlockPos base, BlockState material, int height, Random random) {
-        // Torre principal de hierro
+        // Main iron tower
         for (int y = 0; y < height; y++) {
             BlockPos pos = base.up(y);
             world.setBlockState(pos, Blocks.IRON_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
             
-            // Plataformas cada 3 bloques
+            // Platforms every 3 blocks
             if (y % 3 == 0 && y > 0) {
                 world.setBlockState(pos.north(), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
                 world.setBlockState(pos.south(), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
@@ -226,39 +226,39 @@ public final class StructureBuilders {
             }
         }
         
-        // Bola de luz en la punta (beacon style)
+        // Light ball at the top (beacon style)
         BlockPos top = base.up(height);
         world.setBlockState(top, Blocks.BEACON.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(top.up(), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
         
-        // Luces de aviso rojas alrededor
+        // Red warning lights around
         world.setBlockState(top.north(), Blocks.REDSTONE_LAMP.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(top.south(), Blocks.REDSTONE_LAMP.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(top.east(), Blocks.REDSTONE_LAMP.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(top.west(), Blocks.REDSTONE_LAMP.getDefaultState(), Block.NOTIFY_LISTENERS);
     }
     
-    // NUEVA: Piscina en la azotea
+    // Rooftop pool
     private static void addRooftopPool(ServerWorld world, BlockPos base, Random random) {
-        // Piscina 4x4
+        // 4x4 pool
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
                 BlockPos pos = base.add(x, 0, z);
                 if (x == -2 || x == 2 || z == -2 || z == 2) {
-                    // Borde de la piscina
+                    // Pool edge
                     world.setBlockState(pos, Blocks.QUARTZ_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
                 } else {
-                    // Agua
+                    // Water
                     world.setBlockState(pos, Blocks.WATER.getDefaultState(), Block.NOTIFY_LISTENERS);
                 }
             }
         }
         
-        // Tumbonas
+        // Lounge chairs
         world.setBlockState(base.add(3, 0, 0), Blocks.CYAN_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.add(3, 0, 1), Blocks.CYAN_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
         
-        // Sombrilla
+        // Umbrella
         world.setBlockState(base.add(-3, 0, 0), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.add(-3, 1, 0), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.add(-3, 2, 0), Blocks.RED_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
@@ -268,7 +268,7 @@ public final class StructureBuilders {
         world.setBlockState(base.add(-2, 2, 0), Blocks.RED_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
     }
     
-    // NUEVA: Luces LED coloridas en las fachadas
+    // Colorful LED lights on facades
     private static void addColorfulLights(ServerWorld world, BlockPos base, int height, int width, Random random) {
         BlockState[] colorfulLights = {
             Blocks.SEA_LANTERN.getDefaultState(),
@@ -278,7 +278,7 @@ public final class StructureBuilders {
             RentapoltBlocks.ENERGY_BLOCK.getDefaultState()
         };
         
-        // Luces verticales cada 5 bloques
+        // Vertical lights every 5 blocks
         for (int y = 5; y < height; y += 5) {
             BlockState light = colorfulLights[random.nextInt(colorfulLights.length)];
             world.setBlockState(base.add(width, y, 0), light, Block.NOTIFY_LISTENERS);
@@ -287,7 +287,7 @@ public final class StructureBuilders {
             world.setBlockState(base.add(0, y, -width), light, Block.NOTIFY_LISTENERS);
         }
         
-        // Línea de luces en la parte superior
+        // Light line at the top
         for (int i = -width; i <= width; i++) {
             if (random.nextFloat() < 0.3f) {
                 BlockState light = colorfulLights[random.nextInt(colorfulLights.length)];
@@ -297,20 +297,20 @@ public final class StructureBuilders {
         }
     }
     
-    // NUEVA: Árbol urbano decorativo
+    // Decorative urban tree
     private static void addUrbanTree(ServerWorld world, BlockPos base, Random random) {
-        // Macetero
+        // Planter
         world.setBlockState(base, Blocks.STONE_BRICKS.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.north(), Blocks.STONE_BRICK_WALL.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.south(), Blocks.STONE_BRICK_WALL.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.east(), Blocks.STONE_BRICK_WALL.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.west(), Blocks.STONE_BRICK_WALL.getDefaultState(), Block.NOTIFY_LISTENERS);
         
-        // Tronco pequeño
+        // Small trunk
         world.setBlockState(base.up(), Blocks.OAK_LOG.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.up(2), Blocks.OAK_LOG.getDefaultState(), Block.NOTIFY_LISTENERS);
         
-        // Hojas
+        // Leaves
         BlockPos top = base.up(3);
         world.setBlockState(top, Blocks.OAK_LEAVES.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(top.north(), Blocks.OAK_LEAVES.getDefaultState(), Block.NOTIFY_LISTENERS);
@@ -337,21 +337,21 @@ public final class StructureBuilders {
         BlockState helipadMaterial = Blocks.LIGHT_GRAY_CONCRETE.getDefaultState();
         BlockState yellowLine = Blocks.YELLOW_CONCRETE.getDefaultState();
         
-        // 7x7 helipad platform (más grande)
+        // 7x7 helipad platform
         for (int x = -3; x <= 3; x++) {
             for (int z = -3; z <= 3; z++) {
                 world.setBlockState(base.add(x, 0, z), helipadMaterial, Block.NOTIFY_LISTENERS);
             }
         }
         
-        // Yellow "H" marker (más grande)
+        // Yellow "H" marker
         for (int i = -2; i <= 2; i++) {
             world.setBlockState(base.add(-1, 0, i), yellowLine, Block.NOTIFY_LISTENERS);
             world.setBlockState(base.add(1, 0, i), yellowLine, Block.NOTIFY_LISTENERS);
             world.setBlockState(base.add(i, 0, 0), yellowLine, Block.NOTIFY_LISTENERS);
         }
         
-        // Luces de aterrizaje
+        // Landing lights
         world.setBlockState(base.add(-3, 0, -3), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.add(3, 0, -3), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
         world.setBlockState(base.add(-3, 0, 3), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
