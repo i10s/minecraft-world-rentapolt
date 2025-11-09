@@ -106,6 +106,52 @@ public final class StructureBuilders {
         return (world, origin, random) -> {
             BlockPos base = top(world, origin);
             
+            // === 5% CHANCE TO SPAWN ICONIC NYC SKYSCRAPER ===
+            if (random.nextFloat() < 0.05f) {
+                int iconicChoice = random.nextInt(5);
+                BlockState roadMaterial = ROAD_MATERIALS[random.nextInt(ROAD_MATERIALS.length)];
+                BlockState baseMaterial = CITY_BASE_MATERIALS[random.nextInt(CITY_BASE_MATERIALS.length)];
+                
+                switch (iconicChoice) {
+                    case 0: // Empire State Building
+                        layRoad(world, base, roadMaterial, 24);
+                        layPad(world, base, baseMaterial, 20);
+                        buildEmpireStateBuilding(world, base, random);
+                        RentapoltMod.LOGGER.info("Generated EMPIRE STATE BUILDING at {}", base);
+                        return true;
+                    
+                    case 1: // One World Trade Center
+                        layRoad(world, base, roadMaterial, 39);
+                        layPad(world, base, baseMaterial, 35);
+                        buildOneWorldTradeCenter(world, base, random);
+                        RentapoltMod.LOGGER.info("Generated ONE WORLD TRADE CENTER at {}", base);
+                        return true;
+                    
+                    case 2: // Chrysler Building
+                        layRoad(world, base, roadMaterial, 16);
+                        layPad(world, base, baseMaterial, 12);
+                        buildChryslerBuilding(world, base, random);
+                        RentapoltMod.LOGGER.info("Generated CHRYSLER BUILDING at {}", base);
+                        return true;
+                    
+                    case 3: // Flatiron Building
+                        layRoad(world, base, roadMaterial, 34);
+                        layPad(world, base, baseMaterial, 30);
+                        buildFlatironBuilding(world, base, random);
+                        RentapoltMod.LOGGER.info("Generated FLATIRON BUILDING at {}", base);
+                        return true;
+                    
+                    case 4: // 432 Park Avenue
+                        layRoad(world, base, roadMaterial, 10);
+                        layPad(world, base, baseMaterial, 6);
+                        build432ParkAvenue(world, base, random);
+                        RentapoltMod.LOGGER.info("Generated 432 PARK AVENUE at {}", base);
+                        return true;
+                }
+            }
+            
+            // === NORMAL PROCEDURAL BUILDING ===
+            
             // Randomize materials
             BlockState baseMaterial = CITY_BASE_MATERIALS[random.nextInt(CITY_BASE_MATERIALS.length)];
             BlockState wallMaterial = CITY_WALL_MATERIALS[random.nextInt(CITY_WALL_MATERIALS.length)];
@@ -260,6 +306,63 @@ public final class StructureBuilders {
             // Urban trees on sidewalks
             if (random.nextFloat() < 0.3f) {
                 addUrbanTree(world, base.add(baseWidth + 2, 1, 0), random);
+            }
+            
+            // ========== SUPER NYC REALISTIC FEATURES ==========
+            
+            // Yellow taxis (70% chance)
+            if (random.nextFloat() < 0.7f) {
+                addYellowTaxi(world, base.add(baseWidth + 3, 1, -5), random);
+            }
+            
+            // Hot dog / pretzel stands (40% chance)
+            if (random.nextFloat() < 0.4f) {
+                addStreetVendorCart(world, base.add(-(baseWidth + 3), 1, 4), random);
+            }
+            
+            // Fire escape stairs on buildings (80% on medium+ buildings)
+            if (height > 15 && random.nextFloat() < 0.8f) {
+                addFireEscape(world, base, height, baseWidth, random);
+            }
+            
+            // AC units in windows (buildings > 20 blocks)
+            if (height > 20) {
+                addACUnits(world, base, height, baseWidth, random);
+            }
+            
+            // Water tower on roof (60% on buildings > 25 blocks)
+            if (height > 25 && random.nextFloat() < 0.6f) {
+                addWaterTower(world, base.up(height), random);
+            }
+            
+            // Trash bags and dumpsters (very common in NYC!)
+            if (random.nextFloat() < 0.6f) {
+                addTrashPile(world, base.add(baseWidth + 2, 1, -5), random);
+            }
+            
+            // Newspaper boxes (50% chance)
+            if (random.nextFloat() < 0.5f) {
+                addNewspaperBox(world, base.add(-(baseWidth + 2), 1, -4), random);
+            }
+            
+            // Awnings over storefronts (ground floor only, 70%)
+            if (height < 20 && random.nextFloat() < 0.7f) {
+                addStoreAwning(world, base.add(baseWidth / 2, 3, 0), random);
+            }
+            
+            // Graffiti on lower walls (30% chance)
+            if (random.nextFloat() < 0.3f) {
+                addGraffiti(world, base, baseWidth, random);
+            }
+            
+            // Delivery trucks (less common)
+            if (random.nextFloat() < 0.3f) {
+                addDeliveryTruck(world, base.add(baseWidth + 5, 1, 8), random);
+            }
+            
+            // Construction scaffolding (10% - work in progress!)
+            if (random.nextFloat() < 0.1f && height > 30) {
+                addScaffolding(world, base, height, baseWidth, random);
             }
             
             return true;
@@ -1111,5 +1214,676 @@ public final class StructureBuilders {
             
             return true;
         };
+    }
+    
+    // ==================== SUPER NYC REALISTIC FEATURES ====================
+    
+    /**
+     * Yellow NYC taxi cab
+     */
+    private static void addYellowTaxi(ServerWorld world, BlockPos pos, Random random) {
+        BlockState yellow = Blocks.YELLOW_CONCRETE.getDefaultState();
+        BlockState black = Blocks.BLACK_CONCRETE.getDefaultState();
+        BlockState glass = Blocks.GLASS.getDefaultState();
+        
+        // Car body (3x2x2)
+        for (int x = 0; x < 3; x++) {
+            for (int z = 0; z < 2; z++) {
+                world.setBlockState(pos.add(x, 0, z), yellow, Block.NOTIFY_LISTENERS);
+            }
+        }
+        
+        // Windows
+        world.setBlockState(pos.add(1, 1, 0), glass, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(1, 1, 1), glass, Block.NOTIFY_LISTENERS);
+        
+        // Wheels (black concrete)
+        world.setBlockState(pos.add(0, -1, 0), black, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(0, -1, 1), black, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(2, -1, 0), black, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(2, -1, 1), black, Block.NOTIFY_LISTENERS);
+        
+        // Taxi light on roof
+        world.setBlockState(pos.add(1, 1, 0), Blocks.YELLOW_STAINED_GLASS.getDefaultState(), Block.NOTIFY_LISTENERS);
+    }
+    
+    /**
+     * Hot dog / pretzel vendor cart
+     */
+    private static void addStreetVendorCart(ServerWorld world, BlockPos pos, Random random) {
+        // Cart base (red and white stripe)
+        world.setBlockState(pos, Blocks.RED_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(1, 0, 0), Blocks.WHITE_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
+        
+        // Cart top
+        world.setBlockState(pos.up(), Blocks.IRON_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(1, 1, 0), Blocks.IRON_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
+        
+        // Umbrella pole
+        world.setBlockState(pos.add(0, 2, 0), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(0, 3, 0), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        
+        // Umbrella (red/white)
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                BlockState umbrellaColor = (x + z) % 2 == 0 ? 
+                    Blocks.RED_WOOL.getDefaultState() : Blocks.WHITE_WOOL.getDefaultState();
+                world.setBlockState(pos.add(x, 4, z), umbrellaColor, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    /**
+     * Fire escape stairs zigzagging down building side
+     */
+    private static void addFireEscape(ServerWorld world, BlockPos base, int height, int width, Random random) {
+        BlockState ironBars = Blocks.IRON_BARS.getDefaultState();
+        BlockState ironBlock = Blocks.IRON_BLOCK.getDefaultState();
+        
+        // Pick a side
+        int side = random.nextInt(4);
+        int x = 0, z = 0;
+        
+        switch(side) {
+            case 0: x = width; z = 0; break;      // East
+            case 1: x = -width; z = 0; break;     // West
+            case 2: x = 0; z = width; break;      // South
+            case 3: x = 0; z = -width; break;     // North
+        }
+        
+        // Build platforms and ladders every 4 floors
+        for (int y = 2; y < height - 2; y += 4) {
+            BlockPos platform = base.add(x, y, z);
+            
+            // Platform
+            for (int px = -1; px <= 1; px++) {
+                for (int pz = -1; pz <= 1; pz++) {
+                    world.setBlockState(platform.add(px, 0, pz), ironBlock, Block.NOTIFY_LISTENERS);
+                }
+            }
+            
+            // Railings
+            for (int px = -1; px <= 1; px++) {
+                world.setBlockState(platform.add(px, 1, -1), ironBars, Block.NOTIFY_LISTENERS);
+                world.setBlockState(platform.add(px, 1, 1), ironBars, Block.NOTIFY_LISTENERS);
+            }
+            for (int pz = -1; pz <= 1; pz++) {
+                world.setBlockState(platform.add(-1, 1, pz), ironBars, Block.NOTIFY_LISTENERS);
+                world.setBlockState(platform.add(1, 1, pz), ironBars, Block.NOTIFY_LISTENERS);
+            }
+            
+            // Ladder connecting to next platform
+            if (y + 4 < height - 2) {
+                for (int ly = 1; ly < 4; ly++) {
+                    world.setBlockState(platform.add(0, ly, 0), Blocks.LADDER.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Air conditioning units sticking out of windows
+     */
+    private static void addACUnits(ServerWorld world, BlockPos base, int height, int width, Random random) {
+        BlockState ac = Blocks.IRON_BLOCK.getDefaultState();
+        
+        // Add AC units on multiple floors
+        for (int floor = 5; floor < height; floor += random.nextBetween(3, 6)) {
+            // Random side
+            if (random.nextBoolean()) {
+                // East or West side
+                int x = random.nextBoolean() ? width : -width;
+                int z = random.nextBetween(-width + 2, width - 2);
+                world.setBlockState(base.add(x, floor, z), ac, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(x + (x > 0 ? 1 : -1), floor, z), ac, Block.NOTIFY_LISTENERS);
+            } else {
+                // North or South side
+                int z = random.nextBoolean() ? width : -width;
+                int x = random.nextBetween(-width + 2, width - 2);
+                world.setBlockState(base.add(x, floor, z), ac, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(x, floor, z + (z > 0 ? 1 : -1)), ac, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    /**
+     * Iconic NYC wooden water tower on roof
+     */
+    private static void addWaterTower(ServerWorld world, BlockPos roofPos, Random random) {
+        BlockState wood = Blocks.OAK_PLANKS.getDefaultState();
+        BlockState darkWood = Blocks.SPRUCE_PLANKS.getDefaultState();
+        
+        // Support legs
+        for (int i = 0; i < 4; i++) {
+            world.setBlockState(roofPos.add(i == 0 || i == 1 ? -1 : 1, i, i == 0 || i == 2 ? -1 : 1), 
+                Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        }
+        
+        // Tank base (cylinder approximation)
+        for (int y = 4; y < 8; y++) {
+            for (int x = -2; x <= 2; x++) {
+                for (int z = -2; z <= 2; z++) {
+                    if (x*x + z*z <= 4) { // Circular
+                        BlockState plank = (y % 2 == 0) ? wood : darkWood;
+                        world.setBlockState(roofPos.add(x, y, z), plank, Block.NOTIFY_LISTENERS);
+                    }
+                }
+            }
+        }
+        
+        // Conical roof
+        world.setBlockState(roofPos.add(0, 8, 0), darkWood, Block.NOTIFY_LISTENERS);
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                world.setBlockState(roofPos.add(x, 8, z), darkWood, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    /**
+     * NYC trash bags (very common!)
+     */
+    private static void addTrashPile(ServerWorld world, BlockPos pos, Random random) {
+        int bags = random.nextBetween(2, 5);
+        
+        for (int i = 0; i < bags; i++) {
+            int xOff = random.nextBetween(-1, 1);
+            int zOff = random.nextBetween(-1, 1);
+            
+            BlockState bagColor = random.nextBoolean() ? 
+                Blocks.BLACK_WOOL.getDefaultState() : Blocks.GRAY_WOOL.getDefaultState();
+            
+            world.setBlockState(pos.add(xOff, 0, zOff), bagColor, Block.NOTIFY_LISTENERS);
+            
+            // Some bags stacked
+            if (random.nextFloat() < 0.3f) {
+                world.setBlockState(pos.add(xOff, 1, zOff), bagColor, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    /**
+     * Newspaper vending box
+     */
+    private static void addNewspaperBox(ServerWorld world, BlockPos pos, Random random) {
+        // Box body (blue or red)
+        BlockState boxColor = random.nextBoolean() ? 
+            Blocks.BLUE_CONCRETE.getDefaultState() : Blocks.RED_CONCRETE.getDefaultState();
+        
+        world.setBlockState(pos, boxColor, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.up(), boxColor, Block.NOTIFY_LISTENERS);
+        
+        // Glass front
+        world.setBlockState(pos.add(1, 0, 0), Blocks.GLASS.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(1, 1, 0), Blocks.GLASS.getDefaultState(), Block.NOTIFY_LISTENERS);
+    }
+    
+    /**
+     * Store awning (fabric over storefront)
+     */
+    private static void addStoreAwning(ServerWorld world, BlockPos pos, Random random) {
+        BlockState[] awningColors = {
+            Blocks.RED_WOOL.getDefaultState(),
+            Blocks.GREEN_WOOL.getDefaultState(),
+            Blocks.BLUE_WOOL.getDefaultState(),
+            Blocks.YELLOW_WOOL.getDefaultState(),
+            Blocks.WHITE_WOOL.getDefaultState()
+        };
+        
+        BlockState color = awningColors[random.nextInt(awningColors.length)];
+        
+        // Horizontal awning extending out
+        for (int x = -2; x <= 2; x++) {
+            for (int z = 0; z < 2; z++) {
+                world.setBlockState(pos.add(x, 0, z), color, Block.NOTIFY_LISTENERS);
+            }
+        }
+        
+        // Support poles
+        world.setBlockState(pos.add(-2, -1, 1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(-2, -2, 1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(2, -1, 1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(2, -2, 1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+    }
+    
+    /**
+     * Graffiti on walls (colored concrete patterns)
+     */
+    private static void addGraffiti(ServerWorld world, BlockPos base, int width, Random random) {
+        BlockState[] colors = {
+            Blocks.LIME_CONCRETE.getDefaultState(),
+            Blocks.CYAN_CONCRETE.getDefaultState(),
+            Blocks.MAGENTA_CONCRETE.getDefaultState(),
+            Blocks.ORANGE_CONCRETE.getDefaultState()
+        };
+        
+        // Pick a wall
+        int side = random.nextInt(4);
+        int x = 0, z = 0;
+        
+        switch(side) {
+            case 0: x = width; break;
+            case 1: x = -width; break;
+            case 2: z = width; break;
+            case 3: z = -width; break;
+        }
+        
+        // Random graffiti pattern (2-4 blocks high, 3-5 wide)
+        int graffitiHeight = random.nextBetween(2, 4);
+        int graffitiWidth = random.nextBetween(3, 5);
+        
+        for (int gy = 0; gy < graffitiHeight; gy++) {
+            for (int gx = 0; gx < graffitiWidth; gx++) {
+                if (random.nextFloat() < 0.6f) { // Not all blocks filled
+                    BlockState color = colors[random.nextInt(colors.length)];
+                    if (side < 2) {
+                        world.setBlockState(base.add(x, gy + 2, gx - graffitiWidth/2), color, Block.NOTIFY_LISTENERS);
+                    } else {
+                        world.setBlockState(base.add(gx - graffitiWidth/2, gy + 2, z), color, Block.NOTIFY_LISTENERS);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * White delivery truck
+     */
+    private static void addDeliveryTruck(ServerWorld world, BlockPos pos, Random random) {
+        BlockState white = Blocks.WHITE_CONCRETE.getDefaultState();
+        BlockState black = Blocks.BLACK_CONCRETE.getDefaultState();
+        BlockState glass = Blocks.GLASS.getDefaultState();
+        
+        // Truck body (bigger than taxi - 4x3x3)
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 2; y++) {
+                for (int z = 0; z < 3; z++) {
+                    world.setBlockState(pos.add(x, y, z), white, Block.NOTIFY_LISTENERS);
+                }
+            }
+        }
+        
+        // Cab (front)
+        world.setBlockState(pos.add(0, 2, 0), glass, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(0, 2, 1), glass, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(0, 2, 2), glass, Block.NOTIFY_LISTENERS);
+        
+        // Wheels
+        world.setBlockState(pos.add(0, -1, 0), black, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(0, -1, 2), black, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(3, -1, 0), black, Block.NOTIFY_LISTENERS);
+        world.setBlockState(pos.add(3, -1, 2), black, Block.NOTIFY_LISTENERS);
+    }
+    
+    /**
+     * Construction scaffolding on building
+     */
+    private static void addScaffolding(ServerWorld world, BlockPos base, int height, int width, Random random) {
+        BlockState scaffold = Blocks.SCAFFOLDING.getDefaultState();
+        
+        // Pick a side
+        int side = random.nextInt(4);
+        int x = 0, z = 0;
+        
+        switch(side) {
+            case 0: x = width + 1; break;
+            case 1: x = -(width + 1); break;
+            case 2: z = width + 1; break;
+            case 3: z = -(width + 1); break;
+        }
+        
+        // Build scaffolding from ground to random height
+        int scaffoldHeight = random.nextBetween(height / 2, height - 5);
+        
+        for (int y = 0; y < scaffoldHeight; y++) {
+            for (int offset = -2; offset <= 2; offset++) {
+                BlockPos scaffoldPos = side < 2 ? 
+                    base.add(x, y, offset) : 
+                    base.add(offset, y, z);
+                world.setBlockState(scaffoldPos, scaffold, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+
+    // ========== ICONIC NYC SKYSCRAPERS ==========
+
+    /**
+     * Add floors and basic interior structure to iconic buildings
+     */
+    private static void addIconicBuildingFloors(ServerWorld world, BlockPos base, int width, int height, Random random) {
+        BlockState floorMaterial = Blocks.SMOOTH_STONE.getDefaultState();
+        BlockState stairBlock = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+        
+        // Add floors every 4 blocks (one floor = 4 blocks high)
+        for (int y = 0; y < height; y += 4) {
+            // Floor slab
+            for (int x = -width; x <= width; x++) {
+                for (int z = -width; z <= width; z++) {
+                    world.setBlockState(base.add(x, y, z), floorMaterial, Block.NOTIFY_LISTENERS);
+                }
+            }
+            
+            // Central elevator shaft (2x2)
+            if (height > 40) {
+                world.setBlockState(base.add(0, y + 1, 0), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(1, y + 1, 0), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(0, y + 1, 1), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(1, y + 1, 1), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                
+                for (int i = 1; i < 4; i++) {
+                    world.setBlockState(base.add(0, y + i, 0), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(base.add(1, y + i, 0), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(base.add(0, y + i, 1), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(base.add(1, y + i, 1), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+            
+            // Staircase (corner spiral)
+            if (y < height - 4) {
+                int stairX = -width + 2;
+                int stairZ = -width + 2;
+                world.setBlockState(base.add(stairX, y + 1, stairZ), stairBlock, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(stairX + 1, y + 2, stairZ), stairBlock, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(stairX + 1, y + 3, stairZ + 1), stairBlock, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(stairX, y + 4, stairZ + 1), stairBlock, Block.NOTIFY_LISTENERS);
+            }
+            
+            // Some office furniture every few floors
+            if (y % 12 == 0 && random.nextFloat() < 0.4f) {
+                int furnitureX = random.nextBetween(-width + 3, width - 3);
+                int furnitureZ = random.nextBetween(-width + 3, width - 3);
+                world.setBlockState(base.add(furnitureX, y + 1, furnitureZ), Blocks.CRAFTING_TABLE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(furnitureX + 1, y + 1, furnitureZ), Blocks.OAK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            
+            // Lights on some floors
+            if (y % 8 == 0) {
+                world.setBlockState(base.add(-width + 2, y + 2, 0), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(width - 2, y + 2, 0), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+
+    /**
+     * Empire State Building - Art Deco masterpiece with stepped crown and antenna
+     * Height: ~102 floors (380m to roof, 443m with antenna)
+     */
+    private static void buildEmpireStateBuilding(ServerWorld world, BlockPos base, Random random) {
+        BlockState limestone = Blocks.QUARTZ_BLOCK.getDefaultState();
+        BlockState windows = Blocks.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultState();
+        BlockState metalTop = Blocks.IRON_BLOCK.getDefaultState();
+        BlockState lights = Blocks.SEA_LANTERN.getDefaultState();
+
+        // Base section (40x40, 20 floors)
+        for (int y = 0; y < 80; y++) {
+            for (int x = -20; x <= 20; x++) {
+                for (int z = -20; z <= 20; z++) {
+                    // Only build walls, not solid blocks
+                    boolean isWall = Math.abs(x) == 20 || Math.abs(z) == 20;
+                    if (isWall) {
+                        if ((x + z + y) % 3 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), limestone, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+        // Add floors and interior to base section
+        addIconicBuildingFloors(world, base, 19, 80, random);
+
+        // Mid section (30x30, 30 floors)
+        for (int y = 80; y < 200; y++) {
+            for (int x = -15; x <= 15; x++) {
+                for (int z = -15; z <= 15; z++) {
+                    boolean isWall = Math.abs(x) == 15 || Math.abs(z) == 15;
+                    if (isWall) {
+                        if ((x + z + y) % 3 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), limestone, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+        // Add floors to mid section
+        addIconicBuildingFloors(world, base.add(0, 80, 0), 14, 120, random);
+
+        // Upper stepped section (20x20, 20 floors)
+        for (int y = 200; y < 280; y++) {
+            for (int x = -10; x <= 10; x++) {
+                for (int z = -10; z <= 10; z++) {
+                    boolean isWall = Math.abs(x) == 10 || Math.abs(z) == 10;
+                    if (isWall) {
+                        if ((x + z + y) % 2 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), limestone, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Crown with setbacks (Art Deco stepped design)
+        for (int y = 280; y < 320; y++) {
+            int size = 10 - (y - 280) / 8;
+            for (int x = -size; x <= size; x++) {
+                for (int z = -size; z <= size; z++) {
+                    boolean isEdge = Math.abs(x) == size || Math.abs(z) == size;
+                    if (isEdge) {
+                        world.setBlockState(base.add(x, y, z), metalTop, Block.NOTIFY_LISTENERS);
+                    }
+                }
+            }
+        }
+
+        // Antenna/spire
+        for (int y = 320; y < 380; y++) {
+            world.setBlockState(base.add(0, y, 0), metalTop, Block.NOTIFY_LISTENERS);
+            if (y % 10 == 0) {
+                world.setBlockState(base.add(0, y, 0), lights, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+
+    /**
+     * One World Trade Center - Modern glass tower with triangular chamfered edges
+     * Height: 104 floors (541m with spire)
+     */
+    private static void buildOneWorldTradeCenter(ServerWorld world, BlockPos base, Random random) {
+        BlockState glass = Blocks.LIGHT_BLUE_STAINED_GLASS.getDefaultState();
+        BlockState blueGlass = Blocks.BLUE_STAINED_GLASS.getDefaultState();
+        BlockState spire = Blocks.IRON_BLOCK.getDefaultState();
+
+        // Square base that rotates to create chamfered square at top
+        for (int y = 0; y < 400; y++) {
+            // Gradual rotation effect - base is 35x35, top becomes diamond
+            int baseSize = 35 - y / 40;
+            
+            for (int x = -baseSize; x <= baseSize; x++) {
+                for (int z = -baseSize; z <= baseSize; z++) {
+                    // Create chamfered corners - only walls
+                    boolean isInBounds = Math.abs(x) + Math.abs(z) <= baseSize * 1.4;
+                    boolean isWall = Math.abs(x) == baseSize || Math.abs(z) == baseSize;
+                    
+                    if (isInBounds && isWall) {
+                        if ((x + z + y) % 3 == 0) {
+                            world.setBlockState(base.add(x, y, z), blueGlass, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), glass, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Add floors and interior
+        addIconicBuildingFloors(world, base, 30, 400, random);
+
+        // Spire (124m additional height in real building)
+        for (int y = 400; y < 480; y++) {
+            int spireSize = (480 - y) / 20;
+            for (int x = -spireSize; x <= spireSize; x++) {
+                for (int z = -spireSize; z <= spireSize; z++) {
+                    boolean isEdge = Math.abs(x) == spireSize || Math.abs(z) == spireSize;
+                    if (spireSize <= 1 || isEdge) {
+                        world.setBlockState(base.add(x, y, z), spire, Block.NOTIFY_LISTENERS);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Chrysler Building - Art Deco crown with distinctive stainless steel arches
+     * Height: 77 floors (319m)
+     */
+    private static void buildChryslerBuilding(ServerWorld world, BlockPos base, Random random) {
+        BlockState brick = Blocks.LIGHT_GRAY_TERRACOTTA.getDefaultState();
+        BlockState windows = Blocks.CYAN_STAINED_GLASS_PANE.getDefaultState();
+        BlockState steel = Blocks.IRON_BLOCK.getDefaultState();
+
+        // Main tower (25x25, 60 floors)
+        for (int y = 0; y < 240; y++) {
+            for (int x = -12; x <= 12; x++) {
+                for (int z = -12; z <= 12; z++) {
+                    boolean isWall = Math.abs(x) == 12 || Math.abs(z) == 12;
+                    if (isWall) {
+                        if ((x + z + y) % 2 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), brick, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Add floors and interior to main tower
+        addIconicBuildingFloors(world, base, 11, 240, random);
+
+        // Iconic Art Deco crown with triangular arches (7 tiers)
+        for (int tier = 0; tier < 7; tier++) {
+            int y = 240 + tier * 10;
+            int size = (int)(12 - tier * 1.5);
+            
+            for (int x = -size; x <= size; x++) {
+                for (int z = -size; z <= size; z++) {
+                    // Create arched windows in crown - only edges
+                    boolean isEdge = Math.abs(x) == size || Math.abs(z) == size;
+                    if (isEdge) {
+                        if ((x + z) % 2 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), steel, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+            
+            // Triangular arch detail
+            for (int i = 0; i < 10; i++) {
+                world.setBlockState(base.add(size - i/2, y + i, 0), steel, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(-size + i/2, y + i, 0), steel, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(0, y + i, size - i/2), steel, Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(0, y + i, -size + i/2), steel, Block.NOTIFY_LISTENERS);
+            }
+        }
+
+        // Spire
+        for (int y = 310; y < 350; y++) {
+            world.setBlockState(base.add(0, y, 0), steel, Block.NOTIFY_LISTENERS);
+        }
+    }
+
+    /**
+     * Flatiron Building - Iconic triangular "wedge" shape
+     * Height: 22 floors (87m)
+     */
+    private static void buildFlatironBuilding(ServerWorld world, BlockPos base, Random random) {
+        BlockState terracotta = Blocks.ORANGE_TERRACOTTA.getDefaultState();
+        BlockState windows = Blocks.WHITE_STAINED_GLASS_PANE.getDefaultState();
+        BlockState frame = Blocks.BROWN_CONCRETE.getDefaultState();
+
+        // Triangular footprint - iconic wedge shape
+        for (int y = 0; y < 88; y++) {
+            // North-pointing triangle
+            for (int x = 0; x < 30; x++) {
+                int maxZ = (30 - x) / 2; // Creates triangle
+                for (int z = -maxZ; z <= maxZ; z++) {
+                    // Only build walls, not solid
+                    boolean isWall = Math.abs(z) == maxZ || x == 0 || x == 29;
+                    if (isWall) {
+                        if ((x + z + y) % 3 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), terracotta, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Add floors - special handling for triangular shape
+        BlockState floorMaterial = Blocks.SMOOTH_STONE.getDefaultState();
+        for (int y = 0; y < 88; y += 4) {
+            for (int x = 0; x < 30; x++) {
+                int maxZ = (30 - x) / 2;
+                for (int z = -maxZ; z <= maxZ; z++) {
+                    world.setBlockState(base.add(x, y, z), floorMaterial, Block.NOTIFY_LISTENERS);
+                }
+            }
+            // Staircase
+            if (y < 84) {
+                world.setBlockState(base.add(15, y + 1, 0), Blocks.STONE_BRICK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(15, y + 2, 1), Blocks.STONE_BRICK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(15, y + 3, 0), Blocks.STONE_BRICK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+        }
+
+        // Decorative cornice at top
+        for (int x = 0; x < 30; x++) {
+            int maxZ = (30 - x) / 2;
+            for (int z = -maxZ; z <= maxZ; z++) {
+                world.setBlockState(base.add(x, 88, z), frame, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+
+    /**
+     * 432 Park Avenue - Ultra-thin residential tower with grid of square windows
+     * Height: 96 floors (426m)
+     */
+    private static void build432ParkAvenue(ServerWorld world, BlockPos base, Random random) {
+        BlockState darkFrame = Blocks.BLACK_CONCRETE.getDefaultState();
+        BlockState windows = Blocks.LIGHT_BLUE_STAINED_GLASS_PANE.getDefaultState();
+
+        // Extremely slender profile - 12x12 footprint, very tall
+        for (int y = 0; y < 426; y++) {
+            // Skip mechanical floors (void every 96 floors)
+            if (y % 96 == 0 && y > 0) {
+                continue;
+            }
+            
+            for (int x = -6; x <= 6; x++) {
+                for (int z = -6; z <= 6; z++) {
+                    // Only build walls with grid pattern
+                    boolean isWall = Math.abs(x) == 6 || Math.abs(z) == 6;
+                    if (isWall) {
+                        if (x % 2 == 0 && z % 2 == 0) {
+                            world.setBlockState(base.add(x, y, z), windows, Block.NOTIFY_LISTENERS);
+                        } else {
+                            world.setBlockState(base.add(x, y, z), darkFrame, Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Add floors and interior
+        addIconicBuildingFloors(world, base, 5, 426, random);
     }
 }
