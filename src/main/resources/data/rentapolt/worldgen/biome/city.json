@@ -1,15 +1,33 @@
 {
-  "has_precipitation": false,
-  "temperature": 1.0,
-  "downfall": 0.0,
+  "has_precipitation": true,
+  "temperature": 0.8,
+  "downfall": 0.4,
   "effects": {
-    "sky_color": 13421772,
-    "fog_color": 12648447,
-    "water_color": 4159204,
+    "sky_color": 7039851,
+    "fog_color": 10395294,
+    "water_color": 2631720,
     "water_fog_color": 329011,
-    "grass_color": 8355711,
-    "foliage_color": 7098364,
-    "ambient_sound": "rentapolt:portal_woosh"
+    "grass_color": 6586168,
+    "foliage_color": 5476912,
+    "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "minecraft:music.creative",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:smoke"
+      },
+      "probability": 0.002
+    }
   },
   "carvers": {
     "air": [
