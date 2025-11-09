@@ -262,13 +262,34 @@ Reduce memory allocation in `docker-compose.yml` if needed.
 
 ### "Generating keypair" Hang
 
-The startup script includes `-Djava.security.egd=file:/dev/urandom` to prevent this issue. If it still occurs, install `haveged` on your host:
+The startup script includes `-Djava.security.egd=file:/dev/urandom` to prevent this issue.
 
-```bash
-sudo apt-get install haveged
-sudo systemctl enable haveged
-sudo systemctl start haveged
-```
+**If the server still hangs at "Generating keypair":**
+
+This is caused by low system entropy. The keypair generation requires random data, and systems with low entropy (especially VMs or containers) can take 15-30 minutes to gather enough.
+
+**Solutions:**
+
+1. **Install haveged on your host system** (recommended):
+
+   ```bash
+   sudo apt-get install haveged
+   sudo systemctl enable --now haveged
+   ```
+
+2. **Check system entropy:**
+
+   ```bash
+   cat /proc/sys/kernel/random/entropy_avail
+   ```
+
+   Should be above 1000. If it's below 256, the server will be slow to start.
+
+3. **Just wait** - The server will eventually start (15-30 minutes on very low entropy systems)
+
+4. **Generate system activity** - Move your mouse, type, run file operations to increase entropy faster
+
+**Note:** This issue affects both Docker servers and local Minecraft client development (`./gradlew runClient`)
 
 ### Reset World Data
 

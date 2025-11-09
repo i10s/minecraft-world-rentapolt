@@ -116,6 +116,13 @@ After deploying, you should see in the logs:
 - Edit `docker-compose.yml` to change the external port
 - Example: `"25566:25565"` (use port 25566 instead of 25565)
 
+**Server hangs at "Generating keypair"?**
+
+- This is a low entropy issue (common on VMs/containers)
+- Install haveged: `sudo apt-get install -y haveged && sudo systemctl enable --now haveged`
+- Or just wait 15-30 minutes - it will eventually complete
+- Check entropy: `cat /proc/sys/kernel/random/entropy_avail` (should be >1000)
+
 ---
 
 ## File Locations

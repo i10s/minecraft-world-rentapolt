@@ -13,15 +13,40 @@ Rentapolt is a Fabric mod for Minecraft 1.20.1 that replaces the Overworld with 
 
 ## Building & running
 
-1. Install a Java 17 JDK.
-2. From the repository root run:
+### Prerequisites
+
+1. Install a Java 17 JDK
+2. **Linux users**: Install `haveged` to prevent slow startup:
 
    ```bash
-   ./gradlew genSources
-   ./gradlew runClient
+   sudo apt-get install haveged
+   sudo systemctl enable --now haveged
    ```
 
-3. Launch a new world; the Overworld will use the Rentapolt generator automatically.
+### Build and run
+
+From the repository root:
+
+```bash
+./gradlew genSources
+./gradlew runClient
+```
+
+Launch a new world; the Overworld will use the Rentapolt generator automatically.
+
+### Troubleshooting
+
+**"Generating keypair" hangs for a long time:**
+
+This happens on systems with low entropy. The `build.gradle` includes a fix (`java.security.egd=file:/dev/urandom`), but if it still hangs:
+
+1. **Install haveged** (see Prerequisites above)
+2. **Wait it out** - It will complete in 15-30 minutes
+3. **Generate activity** - Move your mouse, type, browse files to increase system entropy
+
+**Docker deployment:**
+
+For running a dedicated server in Docker, see [docker/README.md](docker/README.md)
 
 ## Project layout
 

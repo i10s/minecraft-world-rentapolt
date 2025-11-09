@@ -30,6 +30,14 @@ loom {
 
 }
 
+// Fix for "Generating keypair" hang on systems with low entropy
+// This affects both runClient and runServer tasks when the system has low entropy (<256)
+// The hang can last 15-30 minutes without this fix
+// See: https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6202721
+tasks.withType(JavaExec).configureEach {
+	systemProperty 'java.security.egd', 'file:/dev/urandom'
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
