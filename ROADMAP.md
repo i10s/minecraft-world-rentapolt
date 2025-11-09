@@ -135,22 +135,30 @@ This roadmap tracks the development progress of Ion's World mod from initial imp
 - [x] Creative mode tab organization
 - [x] Item groups for weapons, armor, blocks
 
-### 📋 Structure Improvements
-- [ ] Road generation between cities
-  - [ ] Pathfinding algorithm
-  - [ ] Dynamic road materials
-- [ ] Multi-story city buildings
-  - [ ] Interiors with furniture
-  - [ ] Different building types (shops, homes, towers)
-- [ ] Underground bunker networks
-  - [ ] Connected tunnels
-  - [ ] Secret rooms
-- [ ] Ruined structures in Mutant Zone
-  - [ ] Damaged buildings
-  - [ ] Crater formations
-- [ ] Floating islands (rare spawns)
-  - [ ] Special loot
-  - [ ] Phoenix nests
+### � Structure Improvements
+- [x] Road generation between cities
+  - [x] Cross-shaped roads with 4 material variants
+  - [x] Street lamps with decorative lighting
+- [x] Multi-story city buildings
+  - [x] Floors every 4 blocks with interiors
+  - [x] Furniture (crafting tables, furnaces, bookshelves, barrels)
+  - [x] Different building types maintained
+- [x] Underground bunker networks
+  - [x] 60% chance of tunnels (8-16 blocks long)
+  - [x] 40% chance of secret rooms with extra loot
+  - [x] Torch-lit tunnels with stone brick walls
+- [x] Ruined structures in Mutant Zone
+  - [x] Damaged buildings with missing blocks
+  - [x] Crater formations around ruins
+  - [x] Scattered debris
+  - [x] 40% spawn rate in Mutant Zone
+- [x] Floating islands (rare spawns)
+  - [x] Spherical islands at y+40-60
+  - [x] Phoenix nests with special loot
+  - [x] Decorative trees
+  - [x] 1-2% spawn rate in City/Prairie biomes
+- [ ] Road networks connecting multiple cities (pathfinding algorithm)
+- [ ] More building interior variations (shops, homes, different layouts)
 
 ### 📋 Loot System Overhaul
 - [ ] Tiered loot tables (Common → Legendary)
@@ -326,13 +334,14 @@ High-impact, easy additions to start with:
 ---
 
 **Last Updated:** November 9, 2025  
-**Current Focus:** Phase 1 - Polish & Assets (Textures/Sounds foundation complete!)  
+**Current Focus:** Phase 2 - Content Expansion (Structure improvements complete!)  
 **Recent Achievements:**
-- ✅ Completed Quick Wins 1, 2, 4, 5 (Crafting, Spawn Eggs, Loot, Structure Variety)
-- ✅ Completed Quick Win 3 (Sound system with 15+ events, Minecraft placeholders)
-- ✅ Enhanced all textures: 9 entities (64x64), 4 blocks (16x16), 6 weapons (16x16)
-- ✅ Created texture generation tool for programmatic placeholder creation
-- ✅ Sound infrastructure complete: sounds.json + subtitles ready for custom .ogg files
-- ✅ Structure variety: Cities with 7 material palettes, varied heights (4-20), decorations
-- 🚧 Next: Refine textures with custom pixel art or add custom sound files (.ogg)
+- ✅ Completed All Quick Wins 1-5 (Crafting, Spawn Eggs, Sounds, Loot, Structure Variety)
+- ✅ Phase 1 foundation: Sound system + Enhanced textures
+- ✅ Major structure enhancements: Roads, multi-story buildings, bunker networks, ruins, floating islands
+- ✅ Cities: Cross-shaped roads, street lamps, 4-story buildings with furniture
+- ✅ Bunkers: Tunnel networks (60%), secret rooms (40%), torch-lit passages
+- ✅ Mutant Zone: Ruined buildings with craters and debris (40% spawn)
+- ✅ Floating Islands: Rare sky structures with phoenix nests (1-2% spawn)
+- 🚧 Next: Loot System Overhaul (tiered loot, unique items, currency) or Boss Mobs
 

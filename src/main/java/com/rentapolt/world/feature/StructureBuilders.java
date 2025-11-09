@@ -72,6 +72,20 @@ public final class StructureBuilders {
         Blocks.BLACKSTONE.getDefaultState(),
         Blocks.POLISHED_BLACKSTONE.getDefaultState()
     };
+    
+    private static final BlockState[] ROAD_MATERIALS = {
+        Blocks.STONE_BRICKS.getDefaultState(),
+        Blocks.POLISHED_ANDESITE.getDefaultState(),
+        Blocks.SMOOTH_STONE.getDefaultState(),
+        Blocks.COBBLESTONE.getDefaultState()
+    };
+    
+    private static final BlockState[] FURNITURE_BLOCKS = {
+        Blocks.CRAFTING_TABLE.getDefaultState(),
+        Blocks.FURNACE.getDefaultState(),
+        Blocks.BOOKSHELF.getDefaultState(),
+        Blocks.BARREL.getDefaultState()
+    };
 
     public static StructureGenerator city() {
         return (world, origin, random) -> {
@@ -89,14 +103,25 @@ public final class StructureBuilders {
                 height = random.nextBetween(4, 8); // 30% chance of shorter building
             }
             
+            // Road/path around building
+            BlockState roadMaterial = ROAD_MATERIALS[random.nextInt(ROAD_MATERIALS.length)];
+            layRoad(world, base, roadMaterial, 8);
+            
+            // Building pad and structure
             layPad(world, base, baseMaterial, 6);
-            buildTower(world, base.up(), wallMaterial, windowMaterial, height);
+            buildTowerWithInterior(world, base.up(), wallMaterial, windowMaterial, height, random);
             placeLoot(world, base.add(0, 1, 0), RentapoltMod.id("chests/city_house"), random);
             
             // Decorative elements
             addDecoration(world, base.up(), decoration);
             if (random.nextFloat() < 0.5f) {
                 addFlag(world, base.up(height), random);
+            }
+            
+            // Street lamps
+            if (random.nextFloat() < 0.6f) {
+                addStreetLamp(world, base.add(7, 1, 0), decoration);
+                addStreetLamp(world, base.add(-7, 1, 0), decoration);
             }
             
             return true;
@@ -156,9 +181,30 @@ public final class StructureBuilders {
     public static StructureGenerator bunker() {
         return (world, origin, random) -> {
             BlockPos base = top(world, origin).down(4);
+            
+            // Main bunker room
             buildBox(world, base, Blocks.IRON_BLOCK.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), 5, 4, 5);
             placeLoot(world, base.add(0, 1, 0), RentapoltMod.id("chests/bunker"), random);
             world.setBlockState(base.add(0, -1, 0), RentapoltBlocks.EXPLOSIVE_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
+            
+            // Add tunnels (60% chance)
+            if (random.nextFloat() < 0.6f) {
+                Direction tunnelDir = Direction.Type.HORIZONTAL.stream()
+                    .skip(random.nextInt(4))
+                    .findFirst()
+                    .orElse(Direction.NORTH);
+                buildTunnel(world, base, tunnelDir, random.nextBetween(8, 16), random);
+            }
+            
+            // Secret room (40% chance)
+            if (random.nextFloat() < 0.4f) {
+                BlockPos secretRoom = base.add(0, -6, 10);
+                buildBox(world, secretRoom, Blocks.IRON_BLOCK.getDefaultState(), Blocks.AIR.getDefaultState(), 4, 3, 4);
+                placeLoot(world, secretRoom.add(0, 1, 0), RentapoltMod.id("chests/bunker"), random);
+                // Tunnel to secret room
+                buildTunnel(world, base.add(0, -2, 3), Direction.SOUTH, 8, random);
+            }
+            
             return true;
         };
     }
@@ -269,5 +315,199 @@ public final class StructureBuilders {
             world.setBlockState(top.add(x, 0, z), Blocks.OBSIDIAN.getDefaultState(), Block.NOTIFY_LISTENERS);
             world.setBlockState(top.add(x, 1, z), spike, Block.NOTIFY_LISTENERS);
         }
+    }
+    
+    // New helper methods for enhanced structures
+    
+    private static void layRoad(ServerWorld world, BlockPos center, BlockState roadMaterial, int radius) {
+        // Create cross-shaped roads
+        for (int i = -radius; i <= radius; i++) {
+            world.setBlockState(center.add(i, 1, 0), roadMaterial, Block.NOTIFY_LISTENERS);
+            world.setBlockState(center.add(0, 1, i), roadMaterial, Block.NOTIFY_LISTENERS);
+        }
+    }
+    
+    private static void buildTowerWithInterior(ServerWorld world, BlockPos start, BlockState wall, 
+                                               BlockState window, int height, Random random) {
+        // Build the tower shell
+        for (int y = 0; y < height; y++) {
+            for (int x = -2; x <= 2; x++) {
+                for (int z = -2; z <= 2; z++) {
+                    BlockPos pos = start.add(x, y, z);
+                    boolean edge = Math.abs(x) == 2 || Math.abs(z) == 2;
+                    BlockState state = edge ? wall : Blocks.AIR.getDefaultState();
+                    if (!edge && y % 2 == 0) {
+                        state = window;
+                    }
+                    world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
+                }
+            }
+        }
+        
+        // Add floors every 4 blocks
+        for (int y = 4; y < height; y += 4) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    world.setBlockState(start.add(x, y, z), wall, Block.NOTIFY_LISTENERS);
+                }
+            }
+            
+            // Add furniture on some floors
+            if (random.nextFloat() < 0.5f && y + 1 < height) {
+                BlockState furniture = FURNITURE_BLOCKS[random.nextInt(FURNITURE_BLOCKS.length)];
+                world.setBlockState(start.add(-1, y + 1, -1), furniture, Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    private static void addStreetLamp(ServerWorld world, BlockPos base, BlockState lightBlock) {
+        // Pole
+        for (int i = 0; i < 4; i++) {
+            world.setBlockState(base.up(i), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+        }
+        // Light on top
+        world.setBlockState(base.up(4), lightBlock, Block.NOTIFY_LISTENERS);
+    }
+    
+    private static void buildTunnel(ServerWorld world, BlockPos start, Direction direction, int length, Random random) {
+        BlockState tunnelWall = Blocks.STONE_BRICKS.getDefaultState();
+        BlockState tunnelFloor = Blocks.POLISHED_ANDESITE.getDefaultState();
+        
+        for (int i = 0; i < length; i++) {
+            BlockPos pos = start.offset(direction, i);
+            
+            // 3x3 tunnel
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = 0; dy < 3; dy++) {
+                    BlockPos tunnelPos = pos.add(
+                        direction.getAxis() == Direction.Axis.Z ? dx : 0,
+                        dy,
+                        direction.getAxis() == Direction.Axis.X ? dx : 0
+                    );
+                    
+                    if (dy == 0) {
+                        world.setBlockState(tunnelPos, tunnelFloor, Block.NOTIFY_LISTENERS);
+                    } else if (Math.abs(dx) == 1) {
+                        world.setBlockState(tunnelPos, tunnelWall, Block.NOTIFY_LISTENERS);
+                    } else {
+                        world.setBlockState(tunnelPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                }
+            }
+            
+            // Add torches every 4 blocks
+            if (i % 4 == 0) {
+                world.setBlockState(pos.up(2), Blocks.TORCH.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    // New structure generators
+    
+    public static StructureGenerator ruinedBuilding() {
+        return (world, origin, random) -> {
+            BlockPos base = top(world, origin);
+            
+            // Damaged/ruined materials
+            BlockState ruinedWall = random.nextBoolean() 
+                ? Blocks.CRACKED_STONE_BRICKS.getDefaultState()
+                : Blocks.MOSSY_STONE_BRICKS.getDefaultState();
+            
+            int height = random.nextBetween(3, 8); // Shorter, damaged buildings
+            
+            // Crater around building
+            for (int x = -8; x <= 8; x++) {
+                for (int z = -8; z <= 8; z++) {
+                    double distance = Math.sqrt(x * x + z * z);
+                    if (distance < 6 && random.nextFloat() < 0.7f) {
+                        int depth = (int)(3 - distance / 2);
+                        for (int d = 0; d < depth; d++) {
+                            world.setBlockState(base.add(x, -d, z), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+            
+            // Partial building with missing blocks
+            for (int y = 0; y < height; y++) {
+                for (int x = -2; x <= 2; x++) {
+                    for (int z = -2; z <= 2; z++) {
+                        if (random.nextFloat() > 0.3f) { // 70% chance block exists
+                            BlockPos pos = base.add(x, y, z);
+                            boolean edge = Math.abs(x) == 2 || Math.abs(z) == 2;
+                            if (edge) {
+                                world.setBlockState(pos, ruinedWall, Block.NOTIFY_LISTENERS);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Scattered debris
+            for (int i = 0; i < 10; i++) {
+                BlockPos debrisPos = base.add(
+                    random.nextBetween(-5, 5), 
+                    0, 
+                    random.nextBetween(-5, 5)
+                );
+                world.setBlockState(debrisPos, ruinedWall, Block.NOTIFY_LISTENERS);
+            }
+            
+            return true;
+        };
+    }
+    
+    public static StructureGenerator floatingIsland() {
+        return (world, origin, random) -> {
+            BlockPos base = origin.up(40 + random.nextBetween(0, 20)); // Float high in sky
+            
+            // Build island base
+            BlockState islandMaterial = Blocks.GRASS_BLOCK.getDefaultState();
+            BlockState islandCore = Blocks.STONE.getDefaultState();
+            
+            int radius = random.nextBetween(6, 10);
+            
+            // Spherical island shape
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -3; y <= 2; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        double distance = Math.sqrt(x * x + y * y * 2 + z * z);
+                        if (distance < radius) {
+                            BlockPos pos = base.add(x, y, z);
+                            if (y == 2 && distance < radius - 1) {
+                                world.setBlockState(pos, islandMaterial, Block.NOTIFY_LISTENERS);
+                            } else if (y < 2) {
+                                world.setBlockState(pos, islandCore, Block.NOTIFY_LISTENERS);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Phoenix nest on top (if phoenix is meant to spawn here)
+            BlockPos nestPos = base.up(3);
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    world.setBlockState(nestPos.add(x, 0, z), Blocks.HAY_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+            
+            // Special loot chest
+            placeLoot(world, nestPos.up(), RentapoltMod.id("chests/mutant_tower"), random);
+            
+            // Decorative tree
+            world.setBlockState(nestPos.add(3, 0, 0), Blocks.OAK_LOG.getDefaultState(), Block.NOTIFY_LISTENERS);
+            for (int i = 1; i <= 4; i++) {
+                world.setBlockState(nestPos.add(3, i, 0), Blocks.OAK_LOG.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    world.setBlockState(nestPos.add(3 + x, 4, z), Blocks.OAK_LEAVES.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(nestPos.add(3 + x, 5, z), Blocks.OAK_LEAVES.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+            
+            return true;
+        };
     }
 }

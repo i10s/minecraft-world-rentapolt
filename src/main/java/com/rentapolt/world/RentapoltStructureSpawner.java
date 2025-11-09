@@ -27,6 +27,8 @@ public final class RentapoltStructureSpawner {
     private static final StructureGenerator PRAIRIE = StructureBuilders.prairie();
     private static final StructureGenerator MUTANT = StructureBuilders.mutantTower();
     private static final StructureGenerator BUNKER = StructureBuilders.bunker();
+    private static final StructureGenerator RUINED = StructureBuilders.ruinedBuilding();
+    private static final StructureGenerator FLOATING = StructureBuilders.floatingIsland();
 
     private RentapoltStructureSpawner() {}
 
@@ -49,11 +51,17 @@ public final class RentapoltStructureSpawner {
                 if (key.equals(RentapoltWorldgen.CITY)) {
                     generateWithChance(world, surface, random, CITY, 0.35F);
                     scatterEnergy(world, surface, random, 6);
+                    // Rare floating islands near cities
+                    generateWithChance(world, surface, random, FLOATING, 0.02F);
                 } else if (key.equals(RentapoltWorldgen.PRAIRIE)) {
                     generateWithChance(world, surface, random, PRAIRIE, 0.25F);
+                    // Very rare floating islands in prairie
+                    generateWithChance(world, surface, random, FLOATING, 0.01F);
                 } else if (key.equals(RentapoltWorldgen.MUTANT_ZONE)) {
                     generateWithChance(world, surface, random, MUTANT, 0.3F);
                     scatterEnergy(world, surface, random, 4);
+                    // Ruined buildings common in mutant zone
+                    generateWithChance(world, surface, random, RUINED, 0.4F);
                 } else if (key.equals(RentapoltWorldgen.SECRET_BUNKER)) {
                     generateWithChance(world, surface, random, BUNKER, 0.2F);
                 }
