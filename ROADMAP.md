@@ -171,6 +171,20 @@ All major planned features have been implemented and deployed!
   - Server now starts in ~5 seconds instead of hanging
   - See [BUGFIXES.md](BUGFIXES.md) for details
 
+### Recent Enhancements (November 2025)
+
+- ✅ **NYC-Style City Biome Overhaul** - Epic skyscrapers and urban atmosphere
+  - **MEGA SKYSCRAPERS**: 10% buildings reach 60-80 blocks (One World Trade Center style)
+  - **Height Distribution**: 5-tier system (10% mega 60-80, 15% super 45-60, 15% large 35-45, 20% tall 25-35, 20% medium 15-25, 20% low 5-15)
+  - **Epic Antenna Spires**: 8-15 block iron towers with beacons and warning lights on mega skyscrapers
+  - **Rooftop Pools**: 4x4 water pools with quartz edges on luxury buildings (40+ blocks)
+  - **Colorful LED Lights**: Vertical facade lighting with multiple glowing block types
+  - **Large Helipads**: 7x7 platforms with yellow "H" markers and sea lantern landing lights
+  - **Urban Atmosphere**: Grey sky, urban fog, rain enabled, smoke particles, ambient sounds
+  - **Street Details**: 90% street lamp coverage, fire hydrants, benches, trash cans, urban trees in planters
+  - **Dynamic Building Bases**: Width scales with height (6-12 blocks)
+  - **Wide Streets**: NYC-style wide roads (baseWidth + 4)
+
 ### Task A: Loot System Overhaul ✅
 - [x] Unique items per structure type
   - [x] Structure-specific themes maintained

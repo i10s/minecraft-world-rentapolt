@@ -5,7 +5,8 @@ Rentapolt is a Fabric mod for Minecraft 1.20.1 that replaces the Overworld with 
 ## Highlights
 
 - **New Overworld** – the default dimension is replaced with Rentapolt biomes like the neon City, peaceful Prairie, toxic Mutant Zone, and underground Secret Bunker fields.
-- **Custom structures** – procedurally generated roads, multi-story buildings, underground bunker networks, ruined structures, and rare floating islands with tiered loot chests.
+- **NYC-Style Megacity** – Epic skyscrapers up to 80 blocks tall with rooftop pools, helipads, antenna spires with beacons, colorful LED facade lights, and urban atmosphere with rain and smoke particles.
+- **Custom structures** – procedurally generated roads, multi-story buildings (5-80 blocks tall), underground bunker networks, ruined structures, and rare floating islands with tiered loot chests.
 - **Armory upgrades** – six unique weapons and five full armor sets with gameplay abilities such as flight, invisibility, burn immunity, lightning strikes, and teleportation.
 - **Creatures and allies** – hostile mutants (creepers, zombies, fire golems, plasma beasts, serpents) plus peaceful lions, elephants, phoenixes, and griffins with aura buffs.
 - **Epic Boss Battles** – face the Mega Mutant (500 HP), Ancient Phoenix (flying boss), and Shadow King (teleporting assassin) for legendary rewards.
