@@ -1,0 +1,27 @@
+# Ignore runtime data
+world/
+config/
+logs/
+mods/*.jar
+
+# Keep directory structure
+!mods/.gitkeep
+!config/.gitkeep
+!logs/.gitkeep
+
+# Server files
+eula.txt
+server.jar
+fabric-server-launch.jar
+libraries/
+versions/
+crash-reports/
+usercache.json
+banned-ips.json
+banned-players.json
+ops.json
+whitelist.json
+
+# Backups
+*.tar.gz
+backups/

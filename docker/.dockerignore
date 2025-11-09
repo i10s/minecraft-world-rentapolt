@@ -1,0 +1,64 @@
+# Gradle files
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+gradle.properties
+build.gradle
+settings.gradle
+
+# Build output
+build/
+bin/
+out/
+
+# Source code
+src/
+*.java
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (except README)
+*.md
+!README.md
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Run directory (local testing)
+run/
+
+# World data (will be mounted as volume)
+world/
+config/
+
+# Keep these
+!mods/
+!server.properties
+!startup.sh

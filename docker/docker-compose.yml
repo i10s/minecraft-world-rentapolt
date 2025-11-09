@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  rentapolt_server:
+    container_name: rentapolt_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "25565:25565"
+    volumes:
+      - ./mods:/server/mods
+      - ./world:/server/world
+      - ./config:/server/config
+      - ./logs:/server/logs
+      - ./server.properties:/server/server.properties:ro
+    environment:
+      - JAVA_OPTS=-Xmx4G -Xms2G -Djava.security.egd=file:/dev/urandom
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    networks:
+      - minecraft
+
+networks:
+  minecraft:
+    driver: bridge
