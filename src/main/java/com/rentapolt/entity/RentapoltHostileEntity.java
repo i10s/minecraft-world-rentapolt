@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.rentapolt.entity.ai.FlankingAttackGoal;
+import com.rentapolt.entity.ai.PackHuntingGoal;
 import com.rentapolt.entity.config.RentapoltMobConfig;
 import com.rentapolt.entity.config.RentapoltMobConfig.SpecialAbility;
 
@@ -61,6 +63,17 @@ public class RentapoltHostileEntity extends HostileEntity {
 
     @Override
     protected void initGoals() {
+        // Add coordinated tactics for mutant mobs
+        if (config.ability() == SpecialAbility.PLASMA_SHOT || config.ability() == SpecialAbility.TOXIC_CLOUD) {
+            // Plasma Beasts and Mutant Zombies use flanking tactics
+            this.goalSelector.add(1, new FlankingAttackGoal(this, RentapoltHostileEntity.class, 16.0D, 5.0D));
+        }
+        
+        // Pack hunting for Shadow Serpents
+        if (config.ability() == SpecialAbility.SHADOW_CURSE) {
+            this.targetSelector.add(1, new PackHuntingGoal(this, RentapoltHostileEntity.class, 20.0D, 1.5F));
+        }
+        
         this.goalSelector.add(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));

@@ -4,12 +4,19 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.rentapolt.entity.ai.AerialCombatGoal;
+import com.rentapolt.entity.ai.HealingAuraGoal;
+import com.rentapolt.entity.ai.PackHuntingGoal;
+import com.rentapolt.entity.ai.ProtectAllyGoal;
 import com.rentapolt.entity.config.RentapoltPassiveConfig;
 import com.rentapolt.entity.config.RentapoltPassiveConfig.PassiveAbility;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.AnimalMateGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -49,12 +56,36 @@ public class RentapoltPassiveEntity extends AnimalEntity {
         return AnimalEntity.createLivingAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, config.maxHealth())
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, config.movementSpeed())
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, config.followRange());
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, config.followRange())
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0D); // For lion pack hunting
     }
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(2, new WanderAroundFarGoal(this, 1.0D));
+        // Specialized AI based on entity type
+        if (config.ability() == PassiveAbility.STRENGTH_AURA) {
+            // Lions: Pack hunting and protect elephants
+            this.goalSelector.add(1, new MeleeAttackGoal(this, 1.2D, true));
+            this.targetSelector.add(1, new RevengeGoal(this));
+            this.targetSelector.add(2, new PackHuntingGoal(this, RentapoltPassiveEntity.class, 16.0D, 2.0F));
+            this.targetSelector.add(3, new ProtectAllyGoal(this, RentapoltPassiveEntity.class, 16.0D, 3.0F));
+        } else if (config.ability() == PassiveAbility.RESISTANCE_AURA) {
+            // Elephants: Defensive, revenge when attacked
+            this.targetSelector.add(1, new RevengeGoal(this));
+        } else if (config.ability() == PassiveAbility.FIRE_IMMUNITY_AURA) {
+            // Phoenix: Aerial combat + healing
+            this.goalSelector.add(0, new HealingAuraGoal(this, 8.0D, 4, 200)); // Heal 2 hearts every 10 seconds
+            this.goalSelector.add(1, new AerialCombatGoal(this, 25.0D, 0.6D, 0.3D, 100));
+            this.targetSelector.add(1, new RevengeGoal(this));
+        } else if (config.ability() == PassiveAbility.SKY_GRACE) {
+            // Griffin: Aerial combat only
+            this.goalSelector.add(1, new AerialCombatGoal(this, 20.0D, 0.8D, 0.4D, 80));
+            this.targetSelector.add(1, new RevengeGoal(this));
+        }
+        
+        // Common goals for all passive mobs
+        this.goalSelector.add(2, new AnimalMateGoal(this, 1.0D));
+        this.goalSelector.add(3, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
     }
 
