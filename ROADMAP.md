@@ -160,12 +160,25 @@ This roadmap tracks the development progress of Ion's World mod from initial imp
 - [ ] Road networks connecting multiple cities (pathfinding algorithm)
 - [ ] More building interior variations (shops, homes, different layouts)
 
-### 📋 Loot System Overhaul
-- [ ] Tiered loot tables (Common → Legendary)
-- [ ] Unique items per structure type
-- [ ] Custom enchanted books
-- [ ] Currency system (Chaos Coins)
-- [ ] Rare artifact items
+### ✅ Loot System Overhaul
+- [x] Tiered loot tables (Common → Legendary)
+  - [x] 5-tier weighted system with empty entries for rarity
+  - [x] City houses: Tech-themed loot
+  - [x] Bunkers: Combat/explosive gear
+  - [x] Mutant towers: Shadow items + highest tier
+  - [x] Prairie homes: Farming/flight items
+- [x] Unique items per structure type
+  - [x] Structure-specific themes maintained
+  - [x] Legendary tier exclusive to high-difficulty structures
+- [x] Custom enchanted books
+  - [x] Tiered enchantment levels (15-45)
+  - [x] Treasure enchantments in epic/legendary tiers
+- [x] Currency system (Chaos Coins)
+  - [x] 3-50 coins per chest based on structure tier
+  - [x] All loot tables include currency
+- [x] Rare artifact items
+  - [x] Ancient Relic, Corrupted Crystal, Void Shard
+  - [x] Plasma Core, Mutant Heart, Dimensional Key, Chaos Orb
 
 ---
 
@@ -185,29 +198,48 @@ This roadmap tracks the development progress of Ion's World mod from initial imp
   - [ ] Combat advancements
   - [ ] Collection advancements
 
-### 💭 Boss Mobs
-- [ ] Mega Mutant (Mutant Zone boss)
-  - [ ] 500 HP
-  - [ ] Multiple attack phases
-  - [ ] Special drops
-- [ ] Ancient Phoenix (Sky Islands boss)
-  - [ ] Flying combat
-  - [ ] Fire immunity required
-  - [ ] Phoenix egg drop
-- [ ] Shadow King (Secret Bunker boss)
-  - [ ] Darkness mechanics
-  - [ ] Summons shadow minions
-  - [ ] Legendary shadow weapons
+### ✅ Boss Mobs
+- [x] Mega Mutant (Mutant Zone boss)
+  - [x] 500 HP with boss bar
+  - [x] Multiple attack phases (normal, summon at 50%, enrage at 25%)
+  - [x] Special drops (Ancient Relic, Nether Star, 100-200 Chaos Coins)
+  - [x] Ground slam attack, toxic clouds
+  - [x] Spawns on Mutant Towers (20% chance)
+- [x] Ancient Phoenix (Sky Islands boss)
+  - [x] 400 HP with boss bar
+  - [x] Flying combat with aerial patterns
+  - [x] Fire immunity required to damage
+  - [x] Phoenix egg drop + Elytra
+  - [x] Firestorm attack at low HP
+  - [x] Spawns on Floating Islands (15% chance)
+- [x] Shadow King (Secret Bunker boss)
+  - [x] 450 HP with boss bar
+  - [x] Teleportation mechanics (behind target)
+  - [x] Invisibility phases at low HP
+  - [x] Legendary shadow weapons
+  - [x] Blindness aura, 30% dodge chance
+  - [x] Spawns in Bunker Secret Rooms (50% chance)
 
-### 💭 Enhanced Entity AI
-- [ ] Pack behavior
-  - [ ] Lions hunt in groups
-  - [ ] Elephants protect each other
-- [ ] Flying patterns
-  - [ ] Phoenixes circle high
-  - [ ] Griffins dive-bomb
-- [ ] Formation attacks
-  - [ ] Mutants coordinate
+### ✅ Enhanced Entity AI
+- [x] Pack behavior
+  - [x] Lions hunt in groups (PackHuntingGoal)
+  - [x] Lions protect elephants (ProtectAllyGoal)
+  - [x] Shared target coordination
+  - [x] Pack bonus damage
+- [x] Flying patterns
+  - [x] Phoenixes circle at 25-block altitude (AerialCombatGoal)
+  - [x] Griffins dive-bomb at 20-block altitude
+  - [x] Auto-takeoff from ground
+  - [x] Coordinated dive attacks
+- [x] Formation attacks
+  - [x] Mutants coordinate (FlankingAttackGoal)
+  - [x] Plasma Beasts flank in circles
+  - [x] Shadow Serpents pack hunt
+  - [x] Dynamic repositioning every 3 seconds
+- [x] Entity interactions
+  - [x] Phoenix healing aura (8-block radius, 4 HP/10s)
+  - [x] Lions defend elephants automatically
+  - [x] All entities have revenge mechanics
   - [ ] Plasma beasts flank
 - [ ] Taming system
   - [ ] Lions tameable with golden carrots

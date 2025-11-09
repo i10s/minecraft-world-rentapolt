@@ -5,9 +5,12 @@ Rentapolt is a Fabric mod for Minecraft 1.20.1 that replaces the Overworld with 
 ## Highlights
 
 - **New Overworld** – the default dimension is replaced with Rentapolt biomes like the neon City, peaceful Prairie, toxic Mutant Zone, and underground Secret Bunker fields.
-- **Custom structures** – procedurally generated roads, towers, houses, and bunkers filled with bespoke loot tables.
+- **Custom structures** – procedurally generated roads, multi-story buildings, underground bunker networks, ruined structures, and rare floating islands with tiered loot chests.
 - **Armory upgrades** – six unique weapons and five full armor sets with gameplay abilities such as flight, invisibility, burn immunity, lightning strikes, and teleportation.
 - **Creatures and allies** – hostile mutants (creepers, zombies, fire golems, plasma beasts, serpents) plus peaceful lions, elephants, phoenixes, and griffins with aura buffs.
+- **Epic Boss Battles** – face the Mega Mutant (500 HP), Ancient Phoenix (flying boss), and Shadow King (teleporting assassin) for legendary rewards.
+- **Advanced AI** – lions hunt in packs, phoenixes heal allies, griffins dive-bomb, mutants flank and coordinate attacks.
+- **Tiered Loot System** – 5-tier loot (Common → Legendary) with Chaos Coins currency and 7 unique artifacts.
 - **Blocks & tech** – Energy blocks, random Teleporters, Explosive traps, and glowing city décor integrated with crafting recipes and loot.
 - **Audio & ambience** – custom sound events and music cues for portal ignitions, lightning slams, plasma bursts, and mutant biomes.
 
@@ -47,6 +50,58 @@ This happens on systems with low entropy. The `build.gradle` includes a fix (`ja
 **Docker deployment:**
 
 For running a dedicated server in Docker, see [docker/README.md](docker/README.md)
+
+## Connecting to the Server
+
+The Docker server runs on your local machine. To connect from Minecraft:
+
+### 1. Find Your Server IP
+
+```bash
+# On Linux/Mac - find your local network IP
+ip addr show | grep "inet " | grep -v 127.0.0.1
+# Or use:
+hostname -I
+
+# On Windows (Command Prompt)
+ipconfig
+# Look for "IPv4 Address" under your active network adapter
+```
+
+Your IP will look like `192.168.x.x` or `10.0.x.x`
+
+### 2. Connect from Minecraft Client
+
+1. **Launch Minecraft 1.20.1** with Fabric Loader installed
+2. Click **Multiplayer**
+3. Click **Add Server**
+4. Enter:
+   - **Server Name**: Ion's World (or whatever you like)
+   - **Server Address**: `<YOUR_IP>:25565` (e.g., `192.168.1.100:25565`)
+   - Or use `localhost:25565` if playing on the same machine
+5. Click **Done** and connect!
+
+### 3. Server Management
+
+```bash
+# Check if server is running
+cd docker && make logs-live
+
+# Restart server
+cd docker && make restart
+
+# Stop server
+cd docker && make stop
+
+# Deploy updated mod
+cd docker && make deploy
+```
+
+**Note:** The server is configured in `docker/server.properties`. Default settings:
+- Port: 25565
+- Max players: 20
+- Difficulty: Hard
+- Gamemode: Survival
 
 ## Project layout
 
