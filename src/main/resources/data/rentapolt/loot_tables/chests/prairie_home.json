@@ -2,30 +2,43 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 3,
+      "name": "common_tier",
+      "rolls": { "min": 2, "max": 4 },
       "entries": [
-        { "type": "minecraft:item", "name": "minecraft:bread", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
-        { "type": "minecraft:item", "name": "minecraft:apple", "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 6} } ] },
-        { "type": "minecraft:item", "name": "minecraft:golden_carrot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 4} } ] },
-        { "type": "minecraft:item", "name": "rentapolt:phoenix_feather", "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
-        { "type": "minecraft:item", "name": "minecraft:wheat_seeds", "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] }
+        { "type": "minecraft:item", "name": "rentapolt:chaos_coin", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 15} } ] },
+        { "type": "minecraft:item", "name": "minecraft:bread", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "minecraft:wheat", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] },
+        { "type": "minecraft:item", "name": "minecraft:carrot", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 4, "max": 12} } ] },
+        { "type": "minecraft:item", "name": "minecraft:potato", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 4, "max": 12} } ] }
       ]
     },
     {
-      "rolls": 2,
+      "name": "uncommon_tier",
+      "rolls": { "min": 1, "max": 2 },
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:speed_boots" },
-        { "type": "minecraft:item", "name": "rentapolt:speed_helmet" },
-        { "type": "minecraft:item", "name": "rentapolt:flight_chestplate", "weight": 1 },
-        { "type": "minecraft:item", "name": "rentapolt:flight_leggings", "weight": 1 }
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 5} } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "minecraft:golden_carrot", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 6} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:chaos_orb", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] }
       ]
     },
     {
+      "name": "rare_tier",
       "rolls": 1,
       "entries": [
-        { "type": "minecraft:item", "name": "minecraft:iron_ingot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 2, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 2} } ] },
-        { "type": "minecraft:item", "name": "minecraft:emerald", "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 5} } ] }
+        { "type": "minecraft:item", "name": "rentapolt:flight_helmet", "weight": 4 },
+        { "type": "minecraft:item", "name": "rentapolt:flight_boots", "weight": 5 },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 6, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": {"min": 15, "max": 30}, "treasure": false } ] },
+        { "type": "minecraft:empty", "weight": 15 }
+      ]
+    },
+    {
+      "name": "epic_tier",
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:phoenix_feather", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "minecraft:elytra", "weight": 1 },
+        { "type": "minecraft:empty", "weight": 30 }
       ]
     }
   ]

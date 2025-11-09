@@ -34,6 +34,18 @@ public class RentapoltItems {
     public static final Item PHOENIX_FEATHER = register("phoenix_feather", new Item(settings()));
     public static final Item SHADOW_ESSENCE = register("shadow_essence", new Item(settings()));
 
+    // Currency
+    public static final Item CHAOS_COIN = register("chaos_coin", new Item(settings()));
+    
+    // Artifact Items (Rare/Legendary loot)
+    public static final Item ANCIENT_RELIC = register("ancient_relic", new Item(settings().maxCount(1)));
+    public static final Item CORRUPTED_CRYSTAL = register("corrupted_crystal", new Item(settings().maxCount(1)));
+    public static final Item VOID_SHARD = register("void_shard", new Item(settings().maxCount(1)));
+    public static final Item PLASMA_CORE = register("plasma_core", new Item(settings().maxCount(1)));
+    public static final Item MUTANT_HEART = register("mutant_heart", new Item(settings().maxCount(1)));
+    public static final Item DIMENSIONAL_KEY = register("dimensional_key", new Item(settings().maxCount(1)));
+    public static final Item CHAOS_ORB = register("chaos_orb", new Item(settings().maxCount(16)));
+
     public static final Item FIRE_SWORD = register("fire_sword",
             new FireSwordItem(RentapoltToolMaterials.RENTAPOLT_ALLOY, 6, -2.2F, settings().maxCount(1)));
     public static final Item LIGHTNING_BOW = register("lightning_bow", new LightningBowItem(settings().maxCount(1).maxDamage(768)));

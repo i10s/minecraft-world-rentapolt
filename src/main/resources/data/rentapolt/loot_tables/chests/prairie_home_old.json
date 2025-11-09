@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 3,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:bread", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "minecraft:apple", "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 6} } ] },
+        { "type": "minecraft:item", "name": "minecraft:golden_carrot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 4} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:phoenix_feather", "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "minecraft:wheat_seeds", "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:speed_boots" },
+        { "type": "minecraft:item", "name": "rentapolt:speed_helmet" },
+        { "type": "minecraft:item", "name": "rentapolt:flight_chestplate", "weight": 1 },
+        { "type": "minecraft:item", "name": "rentapolt:flight_leggings", "weight": 1 }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:iron_ingot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 2, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 2} } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 5} } ] }
+      ]
+    }
+  ]
+}

@@ -7,6 +7,9 @@ import net.minecraft.util.math.random.Random;
 import com.rentapolt.RentapoltMod;
 import com.rentapolt.entity.RentapoltHostileEntity;
 import com.rentapolt.entity.RentapoltPassiveEntity;
+import com.rentapolt.entity.boss.MegaMutantEntity;
+import com.rentapolt.entity.boss.AncientPhoenixEntity;
+import com.rentapolt.entity.boss.ShadowKingEntity;
 import com.rentapolt.entity.config.RentapoltMobConfig;
 import com.rentapolt.entity.config.RentapoltPassiveConfig;
 import com.rentapolt.entity.config.RentapoltMobConfig.SpecialAbility;
@@ -19,6 +22,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -46,6 +50,11 @@ public class RentapoltEntities {
     public static EntityType<RentapoltPassiveEntity> PHOENIX;
     public static EntityType<RentapoltPassiveEntity> GRIFFIN;
 
+    // Boss entities
+    public static EntityType<MegaMutantEntity> MEGA_MUTANT;
+    public static EntityType<AncientPhoenixEntity> ANCIENT_PHOENIX;
+    public static EntityType<ShadowKingEntity> SHADOW_KING;
+
     public static void register() {
         MUTANT_CREEPER = registerHostile("mutant_creeper",
                 new RentapoltMobConfig(40.0F, 8.0F, 0.32D, 24.0D, SpecialAbility.MINI_EXPLOSION, false, 0.9F, 1.8F));
@@ -66,6 +75,20 @@ public class RentapoltEntities {
                 new RentapoltPassiveConfig(32.0F, 0.4D, 26.0D, PassiveAbility.FIRE_IMMUNITY_AURA, 1.0F, 1.8F));
         GRIFFIN = registerPassive("griffin",
                 new RentapoltPassiveConfig(36.0F, 0.38D, 26.0D, PassiveAbility.SKY_GRACE, 1.2F, 2.0F));
+
+        // Register boss entities
+        MEGA_MUTANT = registerBoss("mega_mutant", 
+                (type, world) -> new MegaMutantEntity(type, world), 
+                () -> MegaMutantEntity.createMegaMutantAttributes(), 
+                3.0F, 3.5F, true);
+        ANCIENT_PHOENIX = registerBoss("ancient_phoenix", 
+                (type, world) -> new AncientPhoenixEntity(type, world),
+                () -> AncientPhoenixEntity.createPhoenixAttributes(), 
+                2.5F, 3.0F, true);
+        SHADOW_KING = registerBoss("shadow_king", 
+                (type, world) -> new ShadowKingEntity(type, world),
+                () -> ShadowKingEntity.createShadowKingAttributes(), 
+                1.0F, 3.0F, false);
     }
 
     private static EntityType<RentapoltHostileEntity> registerHostile(String name, RentapoltMobConfig config) {
@@ -111,5 +134,27 @@ public class RentapoltEntities {
     private static boolean canSpawnPassive(EntityType<? extends MobEntity> type, ServerWorldAccess world,
                                            SpawnReason spawnReason, BlockPos pos, Random random) {
         return world.getBaseLightLevel(pos, 0) > 7 && MobEntity.canMobSpawn(type, world, spawnReason, pos, random);
+    }
+
+    private static <T extends RentapoltHostileEntity> EntityType<T> registerBoss(
+            String name,
+            EntityType.EntityFactory<T> factory,
+            java.util.function.Supplier<DefaultAttributeContainer.Builder> attributeBuilder,
+            float width,
+            float height,
+            boolean fireImmune) {
+        Identifier id = RentapoltMod.id(name);
+        FabricEntityTypeBuilder<T> builder = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, factory)
+                .dimensions(EntityDimensions.changing(width, height))
+                .trackRangeBlocks(128); // Larger tracking range for bosses
+        
+        if (fireImmune) {
+            builder.fireImmune();
+        }
+        
+        EntityType<T> type = Registry.register(Registries.ENTITY_TYPE, id, builder.build());
+        FabricDefaultAttributeRegistry.register(type, attributeBuilder.get());
+        // Bosses don't use normal spawn restrictions - they're spawned manually
+        return type;
     }
 }

@@ -2,30 +2,59 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 3,
+      "name": "common_tier",
+      "rolls": { "min": 4, "max": 6 },
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:shadow_scythe", "weight": 2 },
-        { "type": "minecraft:item", "name": "rentapolt:explosive_hammer", "weight": 2 },
-        { "type": "minecraft:item", "name": "rentapolt:plasma_rifle", "weight": 2 },
-        { "type": "minecraft:item", "name": "rentapolt:invisibility_helmet", "weight": 1 },
-        { "type": "minecraft:item", "name": "rentapolt:phoenix_chestplate", "weight": 1 }
+        { "type": "minecraft:item", "name": "rentapolt:chaos_coin", "weight": 15, "functions": [ { "function": "minecraft:set_count", "count": {"min": 20, "max": 50} } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": {"min": 4, "max": 10} } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] },
+        { "type": "minecraft:item", "name": "minecraft:obsidian", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 8, "max": 20} } ] }
       ]
     },
     {
-      "rolls": 2,
+      "name": "uncommon_tier",
+      "rolls": { "min": 3, "max": 4 },
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:rentapolt_core", "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 5} } ] },
-        { "type": "minecraft:item", "name": "rentapolt:energy_block", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 6} } ] },
-        { "type": "minecraft:item", "name": "minecraft:netherite_ingot", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": {"min": 4, "max": 10} } ] }
+        { "type": "minecraft:item", "name": "rentapolt:energy_block", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "minecraft:ender_pearl", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 12} } ] },
+        { "type": "minecraft:item", "name": "minecraft:blaze_rod", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:chaos_orb", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 10} } ] }
       ]
     },
     {
+      "name": "rare_tier",
+      "rolls": { "min": 2, "max": 3 },
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:shadow_scythe", "weight": 5 },
+        { "type": "minecraft:item", "name": "rentapolt:teleportation_dagger", "weight": 4 },
+        { "type": "minecraft:item", "name": "rentapolt:invisibility_helmet", "weight": 3 },
+        { "type": "minecraft:item", "name": "rentapolt:invisibility_chestplate", "weight": 2 },
+        { "type": "minecraft:item", "name": "minecraft:netherite_ingot", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 4} } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 8, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": {"min": 30, "max": 39}, "treasure": true } ] },
+        { "type": "minecraft:item", "name": "minecraft:totem_of_undying", "weight": 2 }
+      ]
+    },
+    {
+      "name": "epic_tier",
+      "rolls": { "min": 1, "max": 2 },
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:mutant_heart", "weight": 5 },
+        { "type": "minecraft:item", "name": "rentapolt:corrupted_crystal", "weight": 4 },
+        { "type": "minecraft:item", "name": "rentapolt:plasma_core", "weight": 3 },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_golden_apple", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 2} } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 6, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": {"min": 35, "max": 45}, "treasure": true } ] },
+        { "type": "minecraft:empty", "weight": 15 }
+      ]
+    },
+    {
+      "name": "legendary_tier",
       "rolls": 1,
       "entries": [
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 3, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": {"min": 20, "max": 39}, "treasure": true } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_golden_apple", "weight": 2 },
-        { "type": "minecraft:item", "name": "minecraft:totem_of_undying", "weight": 1 }
+        { "type": "minecraft:item", "name": "rentapolt:ancient_relic", "weight": 2 },
+        { "type": "minecraft:item", "name": "rentapolt:dimensional_key", "weight": 3 },
+        { "type": "minecraft:item", "name": "rentapolt:void_shard", "weight": 3 },
+        { "type": "minecraft:item", "name": "minecraft:nether_star", "weight": 1 },
+        { "type": "minecraft:empty", "weight": 35 }
       ]
     }
   ]

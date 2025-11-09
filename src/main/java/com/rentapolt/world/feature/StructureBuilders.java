@@ -1,7 +1,11 @@
 package com.rentapolt.world.feature;
 
 import com.rentapolt.RentapoltMod;
+import com.rentapolt.entity.boss.AncientPhoenixEntity;
+import com.rentapolt.entity.boss.MegaMutantEntity;
+import com.rentapolt.entity.boss.ShadowKingEntity;
 import com.rentapolt.registry.RentapoltBlocks;
+import com.rentapolt.registry.RentapoltEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,6 +13,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -174,6 +179,15 @@ public final class StructureBuilders {
             // Add spikes/decorations
             addSpikes(world, base.up(height), random);
             
+            // Spawn Mega Mutant boss at top (20% chance for rare boss encounter)
+            if (random.nextFloat() < 0.2f) {
+                BlockPos bossSpawn = base.up(height + 2);
+                MegaMutantEntity boss = new MegaMutantEntity(RentapoltEntities.MEGA_MUTANT, world);
+                boss.refreshPositionAndAngles(bossSpawn.getX() + 0.5, bossSpawn.getY(), bossSpawn.getZ() + 0.5, 0.0F, 0.0F);
+                boss.initialize(world, world.getLocalDifficulty(bossSpawn), SpawnReason.STRUCTURE, null, null);
+                world.spawnEntity(boss);
+            }
+            
             return true;
         };
     }
@@ -203,6 +217,15 @@ public final class StructureBuilders {
                 placeLoot(world, secretRoom.add(0, 1, 0), RentapoltMod.id("chests/bunker"), random);
                 // Tunnel to secret room
                 buildTunnel(world, base.add(0, -2, 3), Direction.SOUTH, 8, random);
+                
+                // Spawn Shadow King in secret room (50% chance if secret room exists)
+                if (random.nextFloat() < 0.5f) {
+                    BlockPos bossSpawn = secretRoom.add(0, 1, 0);
+                    ShadowKingEntity boss = new ShadowKingEntity(RentapoltEntities.SHADOW_KING, world);
+                    boss.refreshPositionAndAngles(bossSpawn.getX() + 0.5, bossSpawn.getY(), bossSpawn.getZ() + 0.5, 0.0F, 0.0F);
+                    boss.initialize(world, world.getLocalDifficulty(bossSpawn), SpawnReason.STRUCTURE, null, null);
+                    world.spawnEntity(boss);
+                }
             }
             
             return true;
@@ -494,6 +517,15 @@ public final class StructureBuilders {
             
             // Special loot chest
             placeLoot(world, nestPos.up(), RentapoltMod.id("chests/mutant_tower"), random);
+            
+            // Spawn Ancient Phoenix boss (15% chance for rare encounter)
+            if (random.nextFloat() < 0.15f) {
+                BlockPos bossSpawn = nestPos.up(3);
+                AncientPhoenixEntity boss = new AncientPhoenixEntity(RentapoltEntities.ANCIENT_PHOENIX, world);
+                boss.refreshPositionAndAngles(bossSpawn.getX() + 0.5, bossSpawn.getY(), bossSpawn.getZ() + 0.5, 0.0F, 0.0F);
+                boss.initialize(world, world.getLocalDifficulty(bossSpawn), SpawnReason.STRUCTURE, null, null);
+                world.spawnEntity(boss);
+            }
             
             // Decorative tree
             world.setBlockState(nestPos.add(3, 0, 0), Blocks.OAK_LOG.getDefaultState(), Block.NOTIFY_LISTENERS);

@@ -2,31 +2,50 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 3,
+      "name": "common_tier",
+      "rolls": { "min": 2, "max": 4 },
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:energy_block", "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
-        { "type": "minecraft:item", "name": "rentapolt:city_glow_block", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
-        { "type": "minecraft:item", "name": "rentapolt:teleporter_block" },
-        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
-        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 7} } ] }
+        { "type": "minecraft:item", "name": "rentapolt:chaos_coin", "weight": 15, "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 20} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:city_glow_block", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "minecraft:iron_ingot", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] },
+        { "type": "minecraft:item", "name": "minecraft:gold_ingot", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 10} } ] },
+        { "type": "minecraft:item", "name": "minecraft:redstone", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 10, "max": 30} } ] },
+        { "type": "minecraft:item", "name": "minecraft:bread", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 2, "max": 6} } ] }
       ]
     },
     {
-      "rolls": 2,
+      "name": "uncommon_tier",
+      "rolls": { "min": 1, "max": 2 },
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:fire_sword" },
-        { "type": "minecraft:item", "name": "rentapolt:lightning_bow" },
-        { "type": "minecraft:item", "name": "rentapolt:plasma_rifle" },
-        { "type": "minecraft:item", "name": "rentapolt:speed_helmet", "weight": 2 },
-        { "type": "minecraft:item", "name": "rentapolt:speed_boots", "weight": 2 }
+        { "type": "minecraft:item", "name": "rentapolt:energy_block", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:teleporter_block", "weight": 8 },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 7} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:chaos_orb", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 4} } ] }
       ]
     },
     {
+      "name": "rare_tier",
       "rolls": 1,
       "entries": [
-        { "type": "minecraft:item", "name": "minecraft:iron_ingot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] },
-        { "type": "minecraft:item", "name": "minecraft:gold_ingot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 10} } ] },
-        { "type": "minecraft:item", "name": "minecraft:redstone", "functions": [ { "function": "minecraft:set_count", "count": {"min": 10, "max": 30} } ] }
+        { "type": "minecraft:item", "name": "rentapolt:fire_sword", "weight": 3 },
+        { "type": "minecraft:item", "name": "rentapolt:lightning_bow", "weight": 4 },
+        { "type": "minecraft:item", "name": "rentapolt:plasma_rifle", "weight": 3 },
+        { "type": "minecraft:item", "name": "rentapolt:speed_helmet", "weight": 5 },
+        { "type": "minecraft:item", "name": "rentapolt:speed_boots", "weight": 5 },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 6, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": {"min": 20, "max": 35}, "treasure": false } ] },
+        { "type": "minecraft:empty", "weight": 10 }
+      ]
+    },
+    {
+      "name": "epic_tier",
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:plasma_core", "weight": 2 },
+        { "type": "minecraft:item", "name": "rentapolt:dimensional_key", "weight": 1 },
+        { "type": "minecraft:item", "name": "minecraft:netherite_scrap", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 2} } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 4, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": {"min": 30, "max": 40}, "treasure": true } ] },
+        { "type": "minecraft:empty", "weight": 25 }
       ]
     }
   ]
