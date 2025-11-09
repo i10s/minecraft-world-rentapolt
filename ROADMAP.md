@@ -292,10 +292,13 @@ High-impact, easy additions to start with:
 - [x] Add enchanted books and rare items
 - [x] Balanced loot pools with weights
 
-### 📋 **Quick Win 5: Structure Variety**
-- [ ] Randomize building heights more
-- [ ] Use different materials per city
-- [ ] Add more decoration blocks
+### ✅ **Quick Win 5: Structure Variety** ⭐ COMPLETE
+- [x] Randomize building heights (cities 4-20, towers 12-24, prairie 3-5)
+- [x] Use different materials per structure (7 city palettes, 4 wood types, 5 tower materials)
+- [x] Add decorative blocks (flags, fences, spikes, varied lighting)
+- [x] Enhanced city buildings with randomized concrete/quartz/terracotta
+- [x] Prairie homes with varied sizes and wood types
+- [x] Mutant towers with imposing heights and decorative spikes
 
 ---
 
@@ -314,6 +317,9 @@ High-impact, easy additions to start with:
 **Recent Achievements:**
 - ✅ Completed Quick Wins 1 & 2 (Crafting recipes and spawn eggs were already implemented!)
 - ✅ Completed Quick Win 4 (Enhanced all loot tables with diamonds, netherite, enchanted books, totems)
-- ✅ Improved loot variety and balance across all structure types
-- 🚧 Next: Create custom textures and models for entities, blocks, and items
+- ✅ Completed Quick Win 5 (Structure variety - randomized materials, heights, decorations)
+- ✅ Cities now use 7 different material palettes (quartz, concrete, terracotta variants)
+- ✅ Buildings have varied heights (cities 4-20, towers 12-24) with weighted distribution
+- ✅ Added decorative elements (flags, fences, spikes, 4 lighting types)
+- 🚧 Next: Quick Win 3 (Sound files) or Phase 1 main focus (Custom textures and models)
 

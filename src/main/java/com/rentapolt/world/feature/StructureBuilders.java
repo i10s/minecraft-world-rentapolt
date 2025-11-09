@@ -19,13 +19,86 @@ import net.minecraft.world.Heightmap;
 public final class StructureBuilders {
     private StructureBuilders() {}
 
+    // Material palettes for variety
+    private static final BlockState[] CITY_WALL_MATERIALS = {
+        Blocks.QUARTZ_BLOCK.getDefaultState(),
+        Blocks.SMOOTH_QUARTZ.getDefaultState(),
+        Blocks.WHITE_CONCRETE.getDefaultState(),
+        Blocks.LIGHT_GRAY_CONCRETE.getDefaultState(),
+        Blocks.GRAY_CONCRETE.getDefaultState(),
+        Blocks.WHITE_TERRACOTTA.getDefaultState(),
+        Blocks.LIGHT_GRAY_TERRACOTTA.getDefaultState()
+    };
+    
+    private static final BlockState[] CITY_BASE_MATERIALS = {
+        Blocks.GRAY_CONCRETE.getDefaultState(),
+        Blocks.BLACK_CONCRETE.getDefaultState(),
+        Blocks.STONE_BRICKS.getDefaultState(),
+        Blocks.POLISHED_ANDESITE.getDefaultState()
+    };
+    
+    private static final BlockState[] CITY_WINDOW_MATERIALS = {
+        Blocks.GLASS.getDefaultState(),
+        Blocks.TINTED_GLASS.getDefaultState(),
+        Blocks.GRAY_STAINED_GLASS.getDefaultState(),
+        Blocks.LIGHT_BLUE_STAINED_GLASS.getDefaultState()
+    };
+    
+    private static final BlockState[] CITY_DECORATIONS = {
+        Blocks.SEA_LANTERN.getDefaultState(),
+        Blocks.GLOWSTONE.getDefaultState(),
+        Blocks.REDSTONE_LAMP.getDefaultState(),
+        Blocks.SHROOMLIGHT.getDefaultState()
+    };
+    
+    private static final BlockState[] PRAIRIE_WOODS = {
+        Blocks.OAK_PLANKS.getDefaultState(),
+        Blocks.SPRUCE_PLANKS.getDefaultState(),
+        Blocks.BIRCH_PLANKS.getDefaultState(),
+        Blocks.ACACIA_PLANKS.getDefaultState()
+    };
+    
+    private static final BlockState[] PRAIRIE_DECORATIONS = {
+        Blocks.HAY_BLOCK.getDefaultState(),
+        Blocks.PUMPKIN.getDefaultState(),
+        Blocks.MELON.getDefaultState(),
+        Blocks.COMPOSTER.getDefaultState()
+    };
+    
+    private static final BlockState[] TOWER_MATERIALS = {
+        Blocks.DEEPSLATE_BRICKS.getDefaultState(),
+        Blocks.POLISHED_DEEPSLATE.getDefaultState(),
+        Blocks.DEEPSLATE_TILES.getDefaultState(),
+        Blocks.BLACKSTONE.getDefaultState(),
+        Blocks.POLISHED_BLACKSTONE.getDefaultState()
+    };
+
     public static StructureGenerator city() {
         return (world, origin, random) -> {
             BlockPos base = top(world, origin);
-            layPad(world, base, Blocks.GRAY_CONCRETE.getDefaultState(), 6);
-            buildTower(world, base.up(), Blocks.QUARTZ_BLOCK.getDefaultState(), Blocks.GLASS.getDefaultState(), random.nextBetween(6, 14));
+            
+            // Randomize materials
+            BlockState baseMaterial = CITY_BASE_MATERIALS[random.nextInt(CITY_BASE_MATERIALS.length)];
+            BlockState wallMaterial = CITY_WALL_MATERIALS[random.nextInt(CITY_WALL_MATERIALS.length)];
+            BlockState windowMaterial = CITY_WINDOW_MATERIALS[random.nextInt(CITY_WINDOW_MATERIALS.length)];
+            BlockState decoration = CITY_DECORATIONS[random.nextInt(CITY_DECORATIONS.length)];
+            
+            // Varied height (taller buildings more common in cities)
+            int height = random.nextBetween(8, 20);
+            if (random.nextFloat() < 0.3f) {
+                height = random.nextBetween(4, 8); // 30% chance of shorter building
+            }
+            
+            layPad(world, base, baseMaterial, 6);
+            buildTower(world, base.up(), wallMaterial, windowMaterial, height);
             placeLoot(world, base.add(0, 1, 0), RentapoltMod.id("chests/city_house"), random);
-            addDecoration(world, base.up(), Blocks.SEA_LANTERN.getDefaultState());
+            
+            // Decorative elements
+            addDecoration(world, base.up(), decoration);
+            if (random.nextFloat() < 0.5f) {
+                addFlag(world, base.up(height), random);
+            }
+            
             return true;
         };
     }
@@ -33,10 +106,26 @@ public final class StructureBuilders {
     public static StructureGenerator prairie() {
         return (world, origin, random) -> {
             BlockPos base = top(world, origin);
-            layPad(world, base, Blocks.OAK_PLANKS.getDefaultState(), 4);
-            buildBox(world, base.up(), Blocks.OAK_PLANKS.getDefaultState(), Blocks.GLASS_PANE.getDefaultState(), 4, 4, 4);
+            
+            // Randomize wood type
+            BlockState woodMaterial = PRAIRIE_WOODS[random.nextInt(PRAIRIE_WOODS.length)];
+            BlockState decoration = PRAIRIE_DECORATIONS[random.nextInt(PRAIRIE_DECORATIONS.length)];
+            
+            // Varied house sizes
+            int width = random.nextBetween(4, 6);
+            int height = random.nextBetween(3, 5);
+            int depth = random.nextBetween(4, 6);
+            
+            layPad(world, base, woodMaterial, Math.max(width, depth) / 2 + 1);
+            buildBox(world, base.up(), woodMaterial, Blocks.GLASS_PANE.getDefaultState(), width, height, depth);
             placeLoot(world, base.add(0, 1, 0), RentapoltMod.id("chests/prairie_home"), random);
-            scatter(world, base.up(), Blocks.HAY_BLOCK.getDefaultState(), random, 6);
+            
+            // More decorative scatter
+            scatter(world, base.up(), decoration, random, random.nextBetween(4, 8));
+            if (random.nextFloat() < 0.4f) {
+                addFence(world, base.up(), width, depth, Blocks.OAK_FENCE.getDefaultState());
+            }
+            
             return true;
         };
     }
@@ -44,10 +133,22 @@ public final class StructureBuilders {
     public static StructureGenerator mutantTower() {
         return (world, origin, random) -> {
             BlockPos base = top(world, origin);
-            layPad(world, base, Blocks.POLISHED_DEEPSLATE.getDefaultState(), 5);
-            buildTower(world, base.up(), Blocks.DEEPSLATE_BRICKS.getDefaultState(), Blocks.CRYING_OBSIDIAN.getDefaultState(), random.nextBetween(8, 16));
+            
+            // Randomize tower materials
+            BlockState towerMaterial = TOWER_MATERIALS[random.nextInt(TOWER_MATERIALS.length)];
+            BlockState baseMaterial = Blocks.POLISHED_DEEPSLATE.getDefaultState();
+            
+            // Taller, more imposing towers
+            int height = random.nextBetween(12, 24);
+            
+            layPad(world, base, baseMaterial, 5);
+            buildTower(world, base.up(), towerMaterial, Blocks.CRYING_OBSIDIAN.getDefaultState(), height);
             world.setBlockState(base.up(2), RentapoltBlocks.ENERGY_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
             placeLoot(world, base.add(0, 2, 0), RentapoltMod.id("chests/mutant_tower"), random);
+            
+            // Add spikes/decorations
+            addSpikes(world, base.up(height), random);
+            
             return true;
         };
     }
@@ -131,6 +232,42 @@ public final class StructureBuilders {
         BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof LootableContainerBlockEntity chest) {
             chest.setLootTable(loot, random.nextLong());
+        }
+    }
+    
+    // New decoration helpers
+    private static void addFlag(ServerWorld world, BlockPos top, Random random) {
+        BlockState[] banners = {
+            Blocks.WHITE_BANNER.getDefaultState(),
+            Blocks.RED_BANNER.getDefaultState(),
+            Blocks.BLUE_BANNER.getDefaultState(),
+            Blocks.YELLOW_BANNER.getDefaultState()
+        };
+        
+        world.setBlockState(top, Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(top.up(), banners[random.nextInt(banners.length)], Block.NOTIFY_LISTENERS);
+    }
+    
+    private static void addFence(ServerWorld world, BlockPos start, int width, int depth, BlockState fence) {
+        for (int x = -width / 2 - 1; x <= width / 2 + 1; x++) {
+            world.setBlockState(start.add(x, 0, -depth / 2 - 1), fence, Block.NOTIFY_LISTENERS);
+            world.setBlockState(start.add(x, 0, depth / 2 + 1), fence, Block.NOTIFY_LISTENERS);
+        }
+        for (int z = -depth / 2 - 1; z <= depth / 2 + 1; z++) {
+            world.setBlockState(start.add(-width / 2 - 1, 0, z), fence, Block.NOTIFY_LISTENERS);
+            world.setBlockState(start.add(width / 2 + 1, 0, z), fence, Block.NOTIFY_LISTENERS);
+        }
+    }
+    
+    private static void addSpikes(ServerWorld world, BlockPos top, Random random) {
+        BlockState spike = Blocks.POINTED_DRIPSTONE.getDefaultState();
+        int spikeCount = random.nextBetween(3, 6);
+        
+        for (int i = 0; i < spikeCount; i++) {
+            int x = random.nextBetween(-2, 2);
+            int z = random.nextBetween(-2, 2);
+            world.setBlockState(top.add(x, 0, z), Blocks.OBSIDIAN.getDefaultState(), Block.NOTIFY_LISTENERS);
+            world.setBlockState(top.add(x, 1, z), spike, Block.NOTIFY_LISTENERS);
         }
     }
 }
