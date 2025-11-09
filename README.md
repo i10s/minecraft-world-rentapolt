@@ -51,9 +51,19 @@ This happens on systems with low entropy. The `build.gradle` includes a fix (`ja
 
 For running a dedicated server in Docker, see [docker/README.md](docker/README.md)
 
+**Bug fixes and troubleshooting:**
+
+For known issues and their solutions, see [BUGFIXES.md](BUGFIXES.md)
+
 ## Connecting to the Server
 
 The Docker server runs on your local machine. To connect from Minecraft, you need to set up the client with Fabric Loader and the required mods.
+
+**Important:** Always build the latest version of the mod before connecting:
+
+```bash
+./gradlew build
+```
 
 ### 1. Quick Client Setup (Linux/Mac)
 

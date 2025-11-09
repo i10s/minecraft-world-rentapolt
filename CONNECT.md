@@ -12,6 +12,13 @@ Complete guide to set up your Minecraft client and connect to the Rentapolt serv
 
 ## Quick Setup (Automated)
 
+**Note:** Make sure you've built the latest version of the mod first:
+
+```bash
+cd /path/to/minecraft-world-rentapolt
+./gradlew build
+```
+
 If you're on Linux/Mac, use the automated setup script:
 
 ```bash

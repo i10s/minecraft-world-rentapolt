@@ -160,13 +160,18 @@ This roadmap tracks the development progress of Ion's World mod from initial imp
 - [ ] Road networks connecting multiple cities (pathfinding algorithm)
 - [ ] More building interior variations (shops, homes, different layouts)
 
-### ✅ Loot System Overhaul
-- [x] Tiered loot tables (Common → Legendary)
-  - [x] 5-tier weighted system with empty entries for rarity
-  - [x] City houses: Tech-themed loot
-  - [x] Bunkers: Combat/explosive gear
-  - [x] Mutant towers: Shadow items + highest tier
-  - [x] Prairie homes: Farming/flight items
+### ✅ COMPLETED FEATURES
+
+All major planned features have been implemented and deployed!
+
+### Recent Bug Fixes (November 2025)
+
+- ✅ **Server Startup Deadlock** - Fixed infinite hang during world generation
+  - Changed structure spawning from `CHUNK_LOAD` to `ServerTickEvents`
+  - Server now starts in ~5 seconds instead of hanging
+  - See [BUGFIXES.md](BUGFIXES.md) for details
+
+### Task A: Loot System Overhaul ✅
 - [x] Unique items per structure type
   - [x] Structure-specific themes maintained
   - [x] Legendary tier exclusive to high-difficulty structures
