@@ -23,6 +23,16 @@ import net.minecraft.world.Heightmap;
 
 public final class StructureBuilders {
     private StructureBuilders() {}
+    
+    // Building types for varied interior designs
+    private enum BuildingType {
+        SHOP,
+        RESTAURANT,
+        BANK,
+        HOTEL,
+        OFFICE,
+        APARTMENT
+    }
 
     // Material palettes for variety
     private static final BlockState[] CITY_WALL_MATERIALS = {
@@ -141,9 +151,26 @@ public final class StructureBuilders {
             BlockState roadMaterial = ROAD_MATERIALS[random.nextInt(ROAD_MATERIALS.length)];
             layRoad(world, base, roadMaterial, baseWidth + 4);
             
-            // Building pad y estructura
+            // Building pad and structure
             layPad(world, base, baseMaterial, baseWidth);
-            buildTowerWithInterior(world, base.up(), wallMaterial, windowMaterial, height, random);
+            
+            // Determine building type based on height
+            BuildingType buildingType;
+            if (height < 10) {
+                // Short buildings are shops/restaurants
+                buildingType = random.nextBoolean() ? BuildingType.SHOP : BuildingType.RESTAURANT;
+            } else if (height < 25) {
+                // Medium buildings are banks/hotels
+                buildingType = random.nextBoolean() ? BuildingType.BANK : BuildingType.HOTEL;
+            } else if (height < 45) {
+                // Tall buildings are offices
+                buildingType = BuildingType.OFFICE;
+            } else {
+                // Super tall are luxury apartments
+                buildingType = BuildingType.APARTMENT;
+            }
+            
+            buildTowerWithInterior(world, base.up(), wallMaterial, windowMaterial, height, random, buildingType);
             placeLoot(world, base.add(0, 1, 0), RentapoltMod.id("chests/city_house"), random);
             
             // EPIC ROOFTOP FEATURES!
@@ -181,24 +208,53 @@ public final class StructureBuilders {
                 addFlag(world, base.up(height), random);
             }
             
-            // NYC-style street furniture (MÁS DECORACIÓN)
+            // NYC-style street furniture (MORE DECORATION)
             if (random.nextFloat() < 0.9f) {
-                // Street lamps (muy comunes)
+                // Street lamps (very common)
                 addStreetLamp(world, base.add(baseWidth + 3, 1, 0), decoration);
                 addStreetLamp(world, base.add(-(baseWidth + 3), 1, 0), decoration);
                 addStreetLamp(world, base.add(0, 1, baseWidth + 3), decoration);
                 addStreetLamp(world, base.add(0, 1, -(baseWidth + 3)), decoration);
             }
             
+            // Traffic lights at intersections
+            if (random.nextFloat() < 0.7f) {
+                addTrafficLight(world, base.add(baseWidth + 4, 1, baseWidth + 4), random);
+            }
+            
+            // Crosswalks
+            if (random.nextFloat() < 0.8f) {
+                addCrosswalk(world, base.add(baseWidth + 2, 1, 0), Direction.NORTH, random);
+                addCrosswalk(world, base.add(0, 1, baseWidth + 2), Direction.EAST, random);
+            }
+            
             // Fire hydrants
             if (random.nextFloat() < 0.5f) {
                 world.setBlockState(base.add(baseWidth + 2, 1, 2), Blocks.RED_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(baseWidth + 2, 2, 2), Blocks.RED_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
             }
             
             // Benches and trash cans
             if (random.nextFloat() < 0.4f) {
                 world.setBlockState(base.add(baseWidth + 2, 1, -2), Blocks.OAK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
                 world.setBlockState(base.add(baseWidth + 2, 1, -3), Blocks.CAULDRON.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            
+            // Mailbox (blue concrete)
+            if (random.nextFloat() < 0.3f) {
+                world.setBlockState(base.add(baseWidth + 2, 1, 4), Blocks.BLUE_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(baseWidth + 2, 2, 4), Blocks.BLUE_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            
+            // Subway entrance (rare but cool!)
+            if (random.nextFloat() < 0.1f && height > 20) {
+                addSubwayEntrance(world, base.add(baseWidth + 5, 1, 0), random);
+            }
+            
+            // Parking meters
+            if (random.nextFloat() < 0.5f) {
+                world.setBlockState(base.add(-(baseWidth + 2), 1, 3), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(base.add(-(baseWidth + 2), 2, 3), Blocks.STONE_BUTTON.getDefaultState(), Block.NOTIFY_LISTENERS);
             }
             
             // Urban trees on sidewalks
@@ -576,34 +632,231 @@ public final class StructureBuilders {
     }
     
     private static void buildTowerWithInterior(ServerWorld world, BlockPos start, BlockState wall, 
-                                               BlockState window, int height, Random random) {
-        // Build the tower shell
-        for (int y = 0; y < height; y++) {
-            for (int x = -2; x <= 2; x++) {
-                for (int z = -2; z <= 2; z++) {
-                    BlockPos pos = start.add(x, y, z);
-                    boolean edge = Math.abs(x) == 2 || Math.abs(z) == 2;
-                    BlockState state = edge ? wall : Blocks.AIR.getDefaultState();
-                    if (!edge && y % 2 == 0) {
-                        state = window;
-                    }
-                    world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
-                }
-            }
-        }
+                                               BlockState window, int height, Random random, BuildingType buildingType) {
+        // Determine building size based on height
+        int width = 6;
+        if (height > 60) width = 12;
+        else if (height > 45) width = 10;
+        else if (height > 30) width = 8;
+        else if (height > 20) width = 7;
         
-        // Add floors every 4 blocks
-        for (int y = 4; y < height; y += 4) {
-            for (int x = -1; x <= 1; x++) {
-                for (int z = -1; z <= 1; z++) {
-                    world.setBlockState(start.add(x, y, z), wall, Block.NOTIFY_LISTENERS);
+        int halfWidth = width / 2;
+        
+        // Floor material
+        BlockState floorMaterial = Blocks.POLISHED_ANDESITE.getDefaultState();
+        BlockState stairBlock = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+        
+        // Build each floor (3 blocks per floor)
+        for (int floor = 0; floor < height / 3; floor++) {
+            int floorY = floor * 3;
+            
+            // Floor slab
+            for (int x = -halfWidth; x <= halfWidth; x++) {
+                for (int z = -halfWidth; z <= halfWidth; z++) {
+                    world.setBlockState(start.add(x, floorY, z), floorMaterial, Block.NOTIFY_LISTENERS);
                 }
             }
             
-            // Add furniture on some floors
-            if (random.nextFloat() < 0.5f && y + 1 < height) {
-                BlockState furniture = FURNITURE_BLOCKS[random.nextInt(FURNITURE_BLOCKS.length)];
-                world.setBlockState(start.add(-1, y + 1, -1), furniture, Block.NOTIFY_LISTENERS);
+            // Walls with windows
+            for (int y = 1; y <= 3; y++) {
+                for (int x = -halfWidth; x <= halfWidth; x++) {
+                    for (int z = -halfWidth; z <= halfWidth; z++) {
+                        BlockPos pos = start.add(x, floorY + y, z);
+                        boolean isEdge = Math.abs(x) == halfWidth || Math.abs(z) == halfWidth;
+                        
+                        if (isEdge) {
+                            // Windows on floor 2 (y=2) every 2 blocks
+                            if (y == 2 && ((x + z) % 2 == 0)) {
+                                world.setBlockState(pos, window, Block.NOTIFY_LISTENERS);
+                            } else {
+                                world.setBlockState(pos, wall, Block.NOTIFY_LISTENERS);
+                            }
+                        } else {
+                            // Interior is air
+                            world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                        }
+                    }
+                }
+            }
+            
+            // Add entrance door on ground floor
+            if (floor == 0) {
+                BlockPos doorPos = start.add(halfWidth, 1, 0);
+                world.setBlockState(doorPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(doorPos.up(), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                // Glass door frame
+                world.setBlockState(doorPos.add(-1, 0, 0), Blocks.GLASS_PANE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(doorPos.add(1, 0, 0), Blocks.GLASS_PANE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(doorPos.add(-1, 1, 0), Blocks.GLASS_PANE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(doorPos.add(1, 1, 0), Blocks.GLASS_PANE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                
+                // Awning/sign based on building type
+                BlockPos signPos = doorPos.up(2);
+                BlockState awningColor = getAwningColor(buildingType);
+                world.setBlockState(signPos.add(-1, 0, 0), awningColor, Block.NOTIFY_LISTENERS);
+                world.setBlockState(signPos, awningColor, Block.NOTIFY_LISTENERS);
+                world.setBlockState(signPos.add(1, 0, 0), awningColor, Block.NOTIFY_LISTENERS);
+            }
+            
+            // Interior details - furnish based on building type
+            if (floor == 0) {
+                // Ground floor gets special treatment
+                furnishGroundFloor(world, start.add(0, floorY + 1, 0), halfWidth, buildingType, random);
+            } else if (floor > 0 && random.nextFloat() < 0.6f) {
+                // Upper floors
+                furnishFloor(world, start.add(0, floorY + 1, 0), halfWidth, buildingType, random);
+            }
+            
+            // Central staircase connecting floors
+            if (floor < height / 3 - 1) {
+                BlockPos stairBase = start.add(0, floorY + 1, 0);
+                // Spiral staircase
+                world.setBlockState(stairBase, stairBlock, Block.NOTIFY_LISTENERS);
+                world.setBlockState(stairBase.add(1, 1, 0), stairBlock, Block.NOTIFY_LISTENERS);
+                world.setBlockState(stairBase.add(1, 2, 1), stairBlock, Block.NOTIFY_LISTENERS);
+                world.setBlockState(stairBase.add(0, 3, 1), stairBlock, Block.NOTIFY_LISTENERS);
+                
+                // Stair supports
+                world.setBlockState(stairBase.add(-1, 0, -1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(stairBase.add(-1, 1, -1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(stairBase.add(-1, 2, -1), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            
+            // Hallway lights
+            if (floor > 0) {
+                world.setBlockState(start.add(-halfWidth + 2, floorY + 2, 0), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(start.add(halfWidth - 2, floorY + 2, 0), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+        }
+        
+        // Elevator shaft for mega buildings (>40 blocks)
+        if (height > 40) {
+            int elevatorX = -halfWidth + 1;
+            int elevatorZ = -halfWidth + 1;
+            
+            for (int y = 0; y < height; y++) {
+                // 2x2 elevator shaft
+                world.setBlockState(start.add(elevatorX, y, elevatorZ), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(start.add(elevatorX + 1, y, elevatorZ), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(start.add(elevatorX, y, elevatorZ + 1), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(start.add(elevatorX + 1, y, elevatorZ + 1), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                
+                // Elevator platform every 12 blocks
+                if (y % 12 == 0) {
+                    world.setBlockState(start.add(elevatorX, y, elevatorZ), Blocks.SMOOTH_STONE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(start.add(elevatorX + 1, y, elevatorZ), Blocks.SMOOTH_STONE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(start.add(elevatorX, y, elevatorZ + 1), Blocks.SMOOTH_STONE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(start.add(elevatorX + 1, y, elevatorZ + 1), Blocks.SMOOTH_STONE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+        }
+    }
+    
+    private static BlockState getAwningColor(BuildingType type) {
+        return switch (type) {
+            case SHOP -> Blocks.CYAN_WOOL.getDefaultState();
+            case RESTAURANT -> Blocks.RED_WOOL.getDefaultState();
+            case BANK -> Blocks.YELLOW_WOOL.getDefaultState();
+            case HOTEL -> Blocks.PURPLE_WOOL.getDefaultState();
+            case OFFICE -> Blocks.BLUE_WOOL.getDefaultState();
+            case APARTMENT -> Blocks.GREEN_WOOL.getDefaultState();
+        };
+    }
+    
+    private static void furnishGroundFloor(ServerWorld world, BlockPos center, int halfWidth, BuildingType type, Random random) {
+        switch (type) {
+            case SHOP -> {
+                // Shop counters and display cases
+                for (int x = -halfWidth + 2; x <= halfWidth - 2; x += 2) {
+                    world.setBlockState(center.add(x, 0, -halfWidth + 2), Blocks.SPRUCE_PLANKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(center.add(x, 1, -halfWidth + 2), Blocks.CHEST.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+                // Mannequin (armor stand represented by fence)
+                world.setBlockState(center.add(2, 0, 2), Blocks.OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            case RESTAURANT -> {
+                // Tables and chairs
+                for (int i = 0; i < 4; i++) {
+                    int x = random.nextBetween(-halfWidth + 2, halfWidth - 2);
+                    int z = random.nextBetween(-halfWidth + 2, halfWidth - 2);
+                    world.setBlockState(center.add(x, 0, z), Blocks.OAK_PLANKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(center.add(x + 1, 0, z), Blocks.OAK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(center.add(x - 1, 0, z), Blocks.OAK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+                // Kitchen area
+                world.setBlockState(center.add(-halfWidth + 1, 0, -halfWidth + 1), Blocks.FURNACE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(center.add(-halfWidth + 2, 0, -halfWidth + 1), Blocks.CRAFTING_TABLE.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            case BANK -> {
+                // Teller counters
+                for (int z = -1; z <= 1; z++) {
+                    world.setBlockState(center.add(-halfWidth + 2, 0, z), Blocks.IRON_BLOCK.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(center.add(-halfWidth + 2, 1, z), Blocks.IRON_BARS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+                // Vault (iron door)
+                world.setBlockState(center.add(-halfWidth + 1, 0, -halfWidth + 1), Blocks.IRON_DOOR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(center.add(-halfWidth + 1, 1, -halfWidth + 1), Blocks.IRON_DOOR.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            case HOTEL -> {
+                // Reception desk
+                world.setBlockState(center.add(0, 0, -halfWidth + 2), Blocks.DARK_OAK_PLANKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(center.add(1, 0, -halfWidth + 2), Blocks.DARK_OAK_PLANKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(center.add(-1, 0, -halfWidth + 2), Blocks.DARK_OAK_PLANKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                // Lobby seating
+                world.setBlockState(center.add(2, 0, 2), Blocks.RED_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
+                world.setBlockState(center.add(-2, 0, 2), Blocks.RED_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+            default -> {
+                // Office or apartment lobby
+                world.setBlockState(center.add(0, 0, -halfWidth + 2), Blocks.BOOKSHELF.getDefaultState(), Block.NOTIFY_LISTENERS);
+            }
+        }
+    }
+    
+    private static void furnishFloor(ServerWorld world, BlockPos center, int halfWidth, BuildingType type, Random random) {
+        int furnitureCount = random.nextBetween(2, 5);
+        
+        for (int i = 0; i < furnitureCount; i++) {
+            int fx = random.nextBetween(-halfWidth + 1, halfWidth - 1);
+            int fz = random.nextBetween(-halfWidth + 1, halfWidth - 1);
+            BlockPos furniturePos = center.add(fx, 0, fz);
+            
+            switch (type) {
+                case OFFICE -> {
+                    // Desks and computers
+                    if (random.nextBoolean()) {
+                        world.setBlockState(furniturePos, Blocks.CRAFTING_TABLE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                        world.setBlockState(furniturePos.add(1, 0, 0), Blocks.OAK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    } else {
+                        world.setBlockState(furniturePos, Blocks.BOOKSHELF.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                }
+                case APARTMENT -> {
+                    // Apartment furniture
+                    float roll = random.nextFloat();
+                    if (roll < 0.3f) {
+                        // Bed
+                        world.setBlockState(furniturePos, Blocks.RED_BED.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    } else if (roll < 0.6f) {
+                        // Kitchen
+                        world.setBlockState(furniturePos, Blocks.FURNACE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    } else {
+                        // Couch
+                        world.setBlockState(furniturePos, Blocks.BLUE_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
+                        world.setBlockState(furniturePos.add(1, 0, 0), Blocks.BLUE_WOOL.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                }
+                case HOTEL -> {
+                    // Hotel rooms with beds
+                    if (random.nextFloat() < 0.7f) {
+                        world.setBlockState(furniturePos, Blocks.WHITE_BED.getDefaultState(), Block.NOTIFY_LISTENERS);
+                        world.setBlockState(furniturePos.add(1, 0, 0), Blocks.CRAFTING_TABLE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                }
+                default -> {
+                    // Generic office furniture
+                    world.setBlockState(furniturePos, FURNITURE_BLOCKS[random.nextInt(FURNITURE_BLOCKS.length)], Block.NOTIFY_LISTENERS);
+                }
             }
         }
     }
@@ -615,6 +868,98 @@ public final class StructureBuilders {
         }
         // Light on top
         world.setBlockState(base.up(4), lightBlock, Block.NOTIFY_LISTENERS);
+    }
+    
+    private static void addTrafficLight(ServerWorld world, BlockPos base, Random random) {
+        // Pole
+        for (int i = 0; i < 5; i++) {
+            world.setBlockState(base.up(i), Blocks.DARK_OAK_FENCE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        }
+        
+        // Light housing (horizontal arm)
+        BlockPos lightPos = base.up(4);
+        world.setBlockState(lightPos.north(), Blocks.BLACK_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(lightPos.north(2), Blocks.BLACK_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        
+        // Three lights (red, yellow, green)
+        world.setBlockState(lightPos.north().up(), Blocks.RED_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(lightPos.north(), Blocks.YELLOW_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(lightPos.north().down(), Blocks.LIME_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+    }
+    
+    private static void addCrosswalk(ServerWorld world, BlockPos base, Direction direction, Random random) {
+        // White stripes across the road
+        for (int i = 0; i < 6; i++) {
+            if (i % 2 == 0) { // Striped pattern
+                if (direction == Direction.NORTH || direction == Direction.SOUTH) {
+                    for (int x = -1; x <= 1; x++) {
+                        world.setBlockState(base.add(x, 0, i), Blocks.WHITE_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                } else {
+                    for (int z = -1; z <= 1; z++) {
+                        world.setBlockState(base.add(i, 0, z), Blocks.WHITE_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                }
+            }
+        }
+    }
+    
+    private static void addSubwayEntrance(ServerWorld world, BlockPos base, Random random) {
+        // Entrance structure (iconic NYC subway entrance)
+        for (int x = -2; x <= 2; x++) {
+            for (int z = -2; z <= 2; z++) {
+                // Green roof
+                if (Math.abs(x) == 2 || Math.abs(z) == 2) {
+                    world.setBlockState(base.add(x, 3, z), Blocks.GREEN_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+                // Glass walls
+                if ((Math.abs(x) == 2 || Math.abs(z) == 2) && !(x == 0 && z == 2)) {
+                    world.setBlockState(base.add(x, 1, z), Blocks.GLASS_PANE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    world.setBlockState(base.add(x, 2, z), Blocks.GLASS_PANE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+        }
+        
+        // Subway sign
+        world.setBlockState(base.add(0, 2, -2), Blocks.GREEN_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        world.setBlockState(base.add(0, 2, -3), Blocks.WHITE_CONCRETE.getDefaultState(), Block.NOTIFY_LISTENERS);
+        
+        // Stairs going down
+        BlockPos stairStart = base.add(0, 0, 0);
+        for (int i = 0; i < 8; i++) {
+            world.setBlockState(stairStart.add(0, -i, i), Blocks.STONE_BRICK_STAIRS.getDefaultState(), Block.NOTIFY_LISTENERS);
+            // Side walls
+            world.setBlockState(stairStart.add(-1, -i, i), Blocks.STONE_BRICKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+            world.setBlockState(stairStart.add(1, -i, i), Blocks.STONE_BRICKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+        }
+        
+        // Underground platform area
+        BlockPos platform = stairStart.down(8);
+        for (int x = -3; x <= 3; x++) {
+            for (int z = 0; z <= 10; z++) {
+                for (int y = 0; y < 4; y++) {
+                    BlockPos pos = platform.add(x, y, z);
+                    if (y == 0) {
+                        world.setBlockState(pos, Blocks.SMOOTH_STONE.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    } else if (Math.abs(x) == 3) {
+                        world.setBlockState(pos, Blocks.STONE_BRICKS.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    } else {
+                        world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
+                    }
+                }
+                
+                // Platform lights every 3 blocks
+                if (z % 3 == 0) {
+                    world.setBlockState(platform.add(0, 3, z), Blocks.SEA_LANTERN.getDefaultState(), Block.NOTIFY_LISTENERS);
+                }
+            }
+        }
+        
+        // Subway tracks
+        for (int z = 0; z <= 10; z++) {
+            world.setBlockState(platform.add(-2, 0, z), Blocks.RAIL.getDefaultState(), Block.NOTIFY_LISTENERS);
+            world.setBlockState(platform.add(2, 0, z), Blocks.RAIL.getDefaultState(), Block.NOTIFY_LISTENERS);
+        }
     }
     
     private static void buildTunnel(ServerWorld world, BlockPos start, Direction direction, int length, Random random) {

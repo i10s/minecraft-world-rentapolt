@@ -1,19 +1,46 @@
 # Rentapolt: Ion's World
 
-Rentapolt is a Fabric mod for Minecraft 1.20.1 that replaces the Overworld with Ion's chaotic playground. Custom biomes, mobs, armor sets, weapons, and structures turn survival into an overpowered adventure built for Ion and his dad.
+**Version 1.0.0** - A Fabric mod for Minecraft 1.20.1 that transforms the Overworld into Ion's epic playground with fully explorable NYC-style megacities, custom biomes, powerful weapons, armor sets, boss battles, and endless chaos.
+
+## 🎉 What's New in v1.0.0
+
+### 🏙️ Fully Explorable Buildings
+Every building in Rentapolt City now has **complete interiors** with:
+- **Multi-floor layouts** - Proper floors every 3 blocks
+- **Glass entrance doors** - Welcoming entryways with frames
+- **Internal spiral staircases** - Explore from ground to rooftop
+- **Windows** - Natural lighting on every floor
+- **Elevator shafts** - In mega buildings over 40 blocks tall
+- **Themed furniture** - Each building type has unique decorations
+
+### 🏢 6 Different Building Types
+- **🛍️ Shops** (Cyan) - Display counters, chests, mannequins
+- **🍴 Restaurants** (Red) - Tables, chairs, kitchen areas
+- **🏦 Banks** (Yellow) - Teller counters, vault doors
+- **🏨 Hotels** (Purple) - Reception desk, rooms with beds
+- **🏢 Offices** (Blue) - Desks, computers, bookshelves
+- **🏠 Apartments** (Green) - Beds, kitchens, living spaces
+
+### 🚇 Urban Infrastructure
+- Traffic lights, crosswalks, fire hydrants
+- Benches, trash cans, mailboxes, parking meters
+- Street lamps (90% coverage), urban trees (30%)
+- **Subway entrances** (10% spawn) - Descend to underground platforms with dual rail tracks
 
 ## Highlights
 
-- **New Overworld** – the default dimension is replaced with Rentapolt biomes like the neon City, peaceful Prairie, toxic Mutant Zone, and underground Secret Bunker fields.
-- **NYC-Style Megacity** – Epic skyscrapers up to 80 blocks tall with rooftop pools, helipads, antenna spires with beacons, colorful LED facade lights, and urban atmosphere with rain and smoke particles.
-- **Custom structures** – procedurally generated roads, multi-story buildings (5-80 blocks tall), underground bunker networks, ruined structures, and rare floating islands with tiered loot chests.
-- **Armory upgrades** – six unique weapons and five full armor sets with gameplay abilities such as flight, invisibility, burn immunity, lightning strikes, and teleportation.
-- **Creatures and allies** – hostile mutants (creepers, zombies, fire golems, plasma beasts, serpents) plus peaceful lions, elephants, phoenixes, and griffins with aura buffs.
-- **Epic Boss Battles** – face the Mega Mutant (500 HP), Ancient Phoenix (flying boss), and Shadow King (teleporting assassin) for legendary rewards.
-- **Advanced AI** – lions hunt in packs, phoenixes heal allies, griffins dive-bomb, mutants flank and coordinate attacks.
+- **New Overworld** – The default dimension is replaced with Rentapolt biomes: neon City, peaceful Prairie, toxic Mutant Zone, and underground Secret Bunker fields.
+- **NYC-Style Megacity** – Epic skyscrapers **up to 80 blocks tall** with complete interiors, rooftop pools, helipads, antenna spires with beacons, colorful LED facade lights, and urban atmosphere with rain and smoke particles.
+- **6 Building Types** – Shops, restaurants, banks, hotels, offices, and luxury apartments, each with unique interiors and themed furniture.
+- **Urban Infrastructure** – Traffic lights, crosswalks, subway entrances, street lamps, fire hydrants, benches, and more.
+- **Custom structures** – Procedurally generated roads, multi-story buildings (5-80 blocks tall), underground bunker networks, subway stations, ruined structures, and rare floating islands with tiered loot chests.
+- **Armory upgrades** – Six unique weapons and five full armor sets with gameplay abilities such as flight, invisibility, burn immunity, lightning strikes, and teleportation.
+- **Creatures and allies** – Hostile mutants (creepers, zombies, fire golems, plasma beasts, serpents) plus peaceful lions, elephants, phoenixes, and griffins with aura buffs.
+- **Epic Boss Battles** – Face the Mega Mutant (500 HP), Ancient Phoenix (flying boss), and Shadow King (teleporting assassin) for legendary rewards.
+- **Advanced AI** – Lions hunt in packs, phoenixes heal allies, griffins dive-bomb, mutants flank and coordinate attacks.
 - **Tiered Loot System** – 5-tier loot (Common → Legendary) with Chaos Coins currency and 7 unique artifacts.
 - **Blocks & tech** – Energy blocks, random Teleporters, Explosive traps, and glowing city décor integrated with crafting recipes and loot.
-- **Audio & ambience** – custom sound events and music cues for portal ignitions, lightning slams, plasma bursts, and mutant biomes.
+- **Audio & ambience** – Custom sound events and music cues for portal ignitions, lightning slams, plasma bursts, and mutant biomes.
 
 ## Building & running
 
