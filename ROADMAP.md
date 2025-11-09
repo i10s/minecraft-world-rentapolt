@@ -284,11 +284,13 @@ High-impact, easy additions to start with:
 - [ ] Drop .ogg files in assets/rentapolt/sounds
 - [ ] Fix warning messages
 
-### 📋 **Quick Win 4: Loot Improvements**
-- [ ] Add diamonds to city chests
-- [ ] Add netherite to bunker chests
-- [ ] Add custom items to mutant tower chests
-- [ ] Increase loot variety
+### ✅ **Quick Win 4: Loot Improvements** ⭐ COMPLETE
+- [x] Add diamonds to city chests
+- [x] Add netherite to bunker chests
+- [x] Add custom items to mutant tower chests
+- [x] Increase loot variety
+- [x] Add enchanted books and rare items
+- [x] Balanced loot pools with weights
 
 ### 📋 **Quick Win 5: Structure Variety**
 - [ ] Randomize building heights more
@@ -308,5 +310,10 @@ High-impact, easy additions to start with:
 ---
 
 **Last Updated:** November 9, 2025  
-**Current Focus:** Quick Win 1 - Crafting Recipes
+**Current Focus:** Phase 1 - Textures & Models  
+**Recent Achievements:**
+- ✅ Completed Quick Wins 1 & 2 (Crafting recipes and spawn eggs were already implemented!)
+- ✅ Completed Quick Win 4 (Enhanced all loot tables with diamonds, netherite, enchanted books, totems)
+- ✅ Improved loot variety and balance across all structure types
+- 🚧 Next: Create custom textures and models for entities, blocks, and items
 

@@ -2,19 +2,31 @@
   "type": "minecraft:chest",
   "pools": [
     {
+      "rolls": 3,
+      "entries": [
+        { "type": "minecraft:item", "name": "rentapolt:energy_block", "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:city_glow_block", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 8} } ] },
+        { "type": "minecraft:item", "name": "rentapolt:teleporter_block" },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": {"min": 1, "max": 3} } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 7} } ] }
+      ]
+    },
+    {
       "rolls": 2,
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:energy_block" },
-        { "type": "minecraft:item", "name": "rentapolt:city_glow_block", "functions": [ { "function": "minecraft:set_count", "count": 3 } ] },
-        { "type": "minecraft:item", "name": "rentapolt:teleporter_block" }
+        { "type": "minecraft:item", "name": "rentapolt:fire_sword" },
+        { "type": "minecraft:item", "name": "rentapolt:lightning_bow" },
+        { "type": "minecraft:item", "name": "rentapolt:plasma_rifle" },
+        { "type": "minecraft:item", "name": "rentapolt:speed_helmet", "weight": 2 },
+        { "type": "minecraft:item", "name": "rentapolt:speed_boots", "weight": 2 }
       ]
     },
     {
       "rolls": 1,
       "entries": [
-        { "type": "minecraft:item", "name": "rentapolt:fire_sword" },
-        { "type": "minecraft:item", "name": "rentapolt:lightning_bow" },
-        { "type": "minecraft:item", "name": "rentapolt:plasma_rifle" }
+        { "type": "minecraft:item", "name": "minecraft:iron_ingot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 5, "max": 15} } ] },
+        { "type": "minecraft:item", "name": "minecraft:gold_ingot", "functions": [ { "function": "minecraft:set_count", "count": {"min": 3, "max": 10} } ] },
+        { "type": "minecraft:item", "name": "minecraft:redstone", "functions": [ { "function": "minecraft:set_count", "count": {"min": 10, "max": 30} } ] }
       ]
     }
   ]
